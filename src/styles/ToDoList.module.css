@@ -1,0 +1,30 @@
+.task-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+  }
+  
+  .task-title {
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .task-due-date {
+    text-align: right;
+  }
+  
+  .completed {
+    text-decoration: line-through;
+    color: gray;
+  }
