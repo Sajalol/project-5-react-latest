@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styles from '../../styles/CreateTask.module.css';
 import btnStyles from "../../styles/Button.module.css";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
 
 import { Select, Input, Checkbox, DatePicker } from 'antd';
 import axios from 'axios';
@@ -18,9 +20,8 @@ const CreateTask = () => {
     due_date: '',
     created_by: currentUser?.id,
     assigned_to: '',
-    // attachements: '',
     category: '',
-    priority: '',
+    priority: 5,
     completed: false,
   });
 
@@ -66,27 +67,38 @@ const CreateTask = () => {
 
   const onFormSubmit = (event) => {
     event.preventDefault();
-    console.log("formData:", formData);
-    console.log("users:", users);
     axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', formData)
-      .then(res => {
-        console.log('Task created successfully:', res.data);
-        setFormData({
-          title: '',
-          content: '',
-          due_date: '',
-          created_by: currentUser?.id,
-          assigned_to: '',
-          category: '',
-          priority: '',
-          completed: false,
-        });
-        alert('Submitted successfully!');
-      })
-      .catch(error => {
-        console.error('Error creating task:', error);
+    Swal.fire({
+      title: 'Submitted successfully!',
+      icon: 'success',
+      confirmButtonColor: '#009688',
+      confirmButtonText: 'OK',
+    })
+    .then((result) => {
+      // reset the form data
+      setFormData({
+        title: '',
+        content: '',
+        due_date: '',
+        created_by: currentUser?.id,
+        assigned_to: '',
+        category: '',
+        priority: '',
+        completed: false,
       });
-  };
+    })
+    .catch((error) => {
+      console.error('Error creating task:', error);
+      // show error message
+      Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while submitting the task. Please try again later.',
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+    });
+};
 
   return (
     <div className={styles.formContainer}>
