@@ -15,18 +15,16 @@ const { Option } = Select;
 const CreateTask = () => {
   const currentUser = useContext(CurrentUserContext);
 
-  console.log('currentUser?.id:', currentUser?.id);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
     due_date: '',
-    created_by: currentUser?.id,
+    created_by: currentUser?.pk,
     assigned_to: '',
     category: '',
     priority: 5,
     completed: false,
   });
-  console.log('formData.created_by:', formData.created_by);
 
   const [users, setUsers] = useState([]);
 
@@ -39,8 +37,6 @@ const CreateTask = () => {
         console.error(error);
       });
   }, []);
-
-  console.log('currentUser:', currentUser);
 
   const onFormChange = (event) => {
     const { name, value } = event.target;
@@ -85,7 +81,7 @@ const CreateTask = () => {
         title: '',
         content: '',
         due_date: '',
-        created_by: currentUser ? parseInt(currentUser.id) : null,
+        created_by: currentUser?.pk,
         assigned_to: '',
         category: '',
         priority: '',
