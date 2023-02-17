@@ -22,7 +22,7 @@ const CreateTask = () => {
     created_by: currentUser?.pk,
     assigned_to: '',
     category: '',
-    priority: 5,
+    priority: '',
     completed: false,
   });
 
@@ -66,8 +66,32 @@ const CreateTask = () => {
     setFormData({ ...formData, completed: event.target.checked });
   };
 
+   // Validation fields to confirm all fields are filled out 
+  const validateFields = () => {
+    const { title, content, assigned_to, category, priority, due_date } = formData;
+  
+    if (!title || !content || !assigned_to || !category || !priority || !due_date) {
+      return false;
+    }
+  
+    return true;
+  };
+
   const onFormSubmit = (event) => {
     event.preventDefault();
+
+    if (!validateFields()) {
+      // show error message
+      Swal.fire({
+        title: 'Error!',
+        text: 'Please fill out all the required fields.',
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
     axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', formData)
     Swal.fire({
       title: 'Submitted successfully!',
