@@ -79,51 +79,51 @@ const CreateTask = () => {
 
   const onFormSubmit = (event) => {
     event.preventDefault();
-
+    
     if (!validateFields()) {
-      // show error message
-      Swal.fire({
-        title: 'Error!',
-        text: 'Please fill out all the required fields.',
-        icon: 'error',
-        confirmButtonColor: '#222635',
-        confirmButtonText: 'OK',
-      });
-      return;
-    }
-
-    axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', formData)
+    // show error message
     Swal.fire({
-      title: 'Submitted successfully!',
-      icon: 'success',
-      confirmButtonColor: '#222635',
-      confirmButtonText: 'OK',
-    })
+    title: 'Error!',
+    text: 'Please fill out all the fields.',
+    icon: 'error',
+    confirmButtonColor: '#222635',
+    confirmButtonText: 'OK',
+    });
+    return;
+    }
+    
+    axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', formData)
     .then((result) => {
-      // reset the form data
-      setFormData({
-        title: '',
-        content: '',
-        due_date: '',
-        created_by: currentUser?.pk,
-        assigned_to: '',
-        category: '',
-        priority: '',
-        completed: false,
-      });
+    Swal.fire({
+    title: 'Submitted successfully!',
+    icon: 'success',
+    confirmButtonColor: '#222635',
+    confirmButtonText: 'OK',
+    });
+    // reset the form data
+    setFormData({
+    title: '',
+    content: '',
+    due_date: '',
+    created_by: currentUser?.pk,
+    assigned_to: '',
+    category: '',
+    priority: '',
+    completed: false,
+    });
     })
     .catch((error) => {
-      console.error('Error creating task:', error);
-      // show error message
-      Swal.fire({
-        title: 'Error!',
-        text: 'An error occurred while submitting the task. Please try again later.',
-        icon: 'error',
-        confirmButtonColor: '#222635',
-        confirmButtonText: 'OK',
-      });
+    console.error('Error creating task:', error);
+    // show error message
+    Swal.fire({
+    title: 'Error!',
+    text: 'An error occurred while submitting the task. Please try again later.',
+    icon: 'error',
+    confirmButtonColor: '#222635',
+    confirmButtonText: 'OK',
     });
-};
+    });
+    };
 
   return (
     <div className={styles.formContainer}>
@@ -154,11 +154,11 @@ const CreateTask = () => {
         />
 
         <label>Created By:</label>
-        <Input
-          name="created_by"
-          value={formData.created_by}
-          disabled
-        />
+          <Input
+            name="created_by"
+            value={currentUser?.username}
+            disabled
+          />
 
           <label>Assigned To:</label>
           <Select
