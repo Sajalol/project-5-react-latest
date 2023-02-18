@@ -29,7 +29,7 @@ const NavBar = () => {
         activeClassName={styles.Active}
         to="/todolist"
       >
-        <i className="fas fa-stream"></i>To do list
+        <i className="fas fa-stream"></i>My to do list
       </NavLink>
       <NavLink
         className={styles.NavLink}

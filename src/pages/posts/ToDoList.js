@@ -10,6 +10,7 @@ const TodoList = () => {
   const [users, setUsers] = useState({});
   const [priorityFilter, setPriorityFilter] = useState(0); // default to no filter
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
+  const [sortField, setSortField] = useState('priority'); // default to sorting by priority
   const currentUser = useCurrentUser();
 
   useEffect(() => {
@@ -55,13 +56,17 @@ const TodoList = () => {
     ? completedTasks.filter(task => task.priority === priorityFilter)
     : completedTasks;
 
-  // apply sort order if set
+  // apply sort order and field if set
   const sortedFilteredTasks = filteredTasks.sort((a, b) => {
-    if (sortOrder === 'asc') {
-      return a.priority - b.priority;
-    } else {
-      return b.priority - a.priority;
+    const sortOrderMultiplier = sortOrder === 'asc' ? 1 : -1;
+
+    if (sortField === 'priority') {
+      return sortOrderMultiplier * (a.priority - b.priority);
+    } else if (sortField === 'due_date') {
+      return sortOrderMultiplier * (new Date(a.due_date) - new Date(b.due_date));
     }
+
+    return 0;
   });
 
   // apply search term filter
@@ -79,25 +84,34 @@ const TodoList = () => {
           onChange={event => setSearchTerm(event.target.value)}
         />
       </div>
+      <div className={styles.filtersContainer}>
       <div className={styles.priorityFilter}>
-        <label>Priority filter:</label>
-        <select value={priorityFilter} onChange={event => setPriorityFilter(parseInt(event.target.value))}>
-          <option value={0}>No filter</option>
-          {[1, 2, 3, 4, 5].map(value => (
-            <option key={value} value={value}>{value}</option>
-          ))}
-        </select>
-      </div>
-      <div className={styles.sortOrder}>
-        <label>Sort priority:</label>
-        <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
+          <label>Priority filter:</label>
+          <select value={priorityFilter} onChange={event => setPriorityFilter(parseInt(event.target.value))}>
+            <option value={0}>No filter</option>
+            {[1, 2, 3, 4, 5].map(value => (
+              <option key={value} value={value}>{value}</option>
+            ))}
+          </select>
+        </div>
+        <div className={styles.sortOrder}>
+          <label>Sort by:</label>
+          <select value={sortField} onChange={event => setSortField(event.target.value)}>
+            <option value="priority">Priority</option>
+            <option value="due_date">Due date</option>
+          </select>
+        </div>
+        <div className={styles.sortOrder}>
+          <label>Sort date:</label>
+          <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
       </div>
       <p>Total tasks: {filteredTasksByTitle.length}</p>
       <ul className={styles.taskList}>
-        {filteredTasksByTitle.length > 0 ? (
+      {filteredTasksByTitle.length > 0 ? (
           filteredTasksByTitle.map(task => (
             <li key={task.id} className={styles.task}>
               <h3 className={styles.taskTitle}>{task.title}</h3>
@@ -105,6 +119,13 @@ const TodoList = () => {
               <p className={styles.taskAssignedTo}>Assigned to: {users[task.assigned_to]?.username}</p>
               <p className={styles.taskCategory}>Category: {task.category}</p>
               <p className={styles.taskPriority}>Priority: {task.priority}</p>
+              <div className={styles.taskProgress}>
+                <div className={styles.taskProgressLabel}>Percent completed:</div>
+                <div
+                  className={styles.taskProgressBar}
+                  style={{ width: `${task.completed_percentage}%` }}
+                />
+              </div>
               <p className={styles.taskCompleted}>Completed: {task.completed ? 'Yes' : 'No'}</p>
             </li>
           ))
