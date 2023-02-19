@@ -121,10 +121,13 @@ const TodoList = () => {
               <p className={styles.taskPriority}>Priority: {task.priority}</p>
               <div className={styles.taskProgress}>
                 <div className={styles.taskProgressLabel}>Percent completed:</div>
-                <div
-                  className={styles.taskProgressBar}
-                  style={{ width: `${task.completed_percentage}%` }}
-                />
+                <div className={styles.taskProgressBarContainer}>
+                  <div
+                    className={styles.taskProgressBar}
+                    style={{ width: `${Math.max(task.completed_percentage, 5)}%` }}
+                  />
+                  <div className={styles.taskProgressValue}>{task.completed_percentage}%</div>
+                </div>
               </div>
               <p className={styles.taskCompleted}>Completed: {task.completed ? 'Yes' : 'No'}</p>
             </li>

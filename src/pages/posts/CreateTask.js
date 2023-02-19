@@ -24,6 +24,7 @@ const CreateTask = () => {
     category: '',
     priority: '',
     completed: false,
+    completed_percentage: 0,
   });
 
   const [users, setUsers] = useState([]);
@@ -64,6 +65,10 @@ const CreateTask = () => {
 
   const onCompletedChange = (event) => {
     setFormData({ ...formData, completed: event.target.checked });
+  };
+
+  const onCompletedPercentageChange = (event) => {
+    setFormData({ ...formData, completed_percentage: event.target.value });
   };
 
    // Validation fields to confirm all fields are filled out 
@@ -110,21 +115,21 @@ const CreateTask = () => {
     category: '',
     priority: '',
     completed: false,
+    completed_percentage: 0,
     });
-    })
-    .catch((error) => {
-    console.error('Error creating task:', error);
-    // show error message
-    Swal.fire({
-    title: 'Error!',
-    text: 'An error occurred while submitting the task. Please try again later.',
-    icon: 'error',
-    confirmButtonColor: '#222635',
-    confirmButtonText: 'OK',
+    }).catch((error) => {
+      console.error('Error creating task:', error);
+      // show error message
+      Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while submitting the task. Please try again later.',
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
     });
-    });
-    };
-
+  };
+  
   return (
     <div className={styles.formContainer}>
       <form onSubmit={onFormSubmit}>
@@ -135,7 +140,7 @@ const CreateTask = () => {
           onChange={onFormChange}
           required
         />
-
+  
         <label>Content:</label>
         <Input.TextArea
           name="content"
@@ -143,7 +148,7 @@ const CreateTask = () => {
           onChange={onFormChange}
           required
         />
-
+  
         <label>Due Date:</label>
         <DatePicker
           onChange={onDueDateChange}
@@ -152,14 +157,14 @@ const CreateTask = () => {
           }}
           required
         />
-
+  
         <label>Created By:</label>
           <Input
             name="created_by"
             value={currentUser?.username}
             disabled
           />
-
+  
           <label>Assigned To:</label>
           <Select
             name="assigned_to"
@@ -171,15 +176,15 @@ const CreateTask = () => {
               <Option key={user.id} value={user.id}>{user.username}</Option>
             ))}
           </Select>
-
-
+  
+  
           {/* <label>Attachements:</label>
           <Input
             name="attachements"
             value={formData.attachements}
             onChange={onFormChange}
           />  */}
-
+  
           <label>Category:</label>
           <Select
             name="category"
@@ -196,7 +201,7 @@ const CreateTask = () => {
             <Option value="3">Python</Option>
             <Option value="4">Javascript</Option>
           </Select>
-
+  
           <label>Priority:</label>
           <Select
             name="priority"
@@ -214,18 +219,29 @@ const CreateTask = () => {
             <Option value={5}>5</Option>
           </Select>
 
+          <label>Completed Percentage:</label>
+          <Input
+            name="completed_percentage"
+            value={formData.completed_percentage}
+            onChange={onCompletedPercentageChange}
+            type="number"
+            min="0"
+            max="100"
+          />
+  
           <label>Completed:</label>
           <Checkbox
             name="completed"
             checked={formData.completed}
             onChange={onCompletedChange}
           />
-
+  
+  
           <input type="submit" value="Submit" className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`} />
-
-            </form>
-          </div>
-          );
-        };
-        
-        export default CreateTask;
+  
+        </form>
+      </div>
+    );
+  };
+  
+  export default CreateTask;

@@ -1,71 +1,90 @@
-.task-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.taskList {
+  list-style-type: none;
+  padding: 0;
 }
 
 .task {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 1rem;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
   padding: 1rem;
-  border: 1px solid gray;
-  border-radius: 5px;
+  max-width: 50%;
 }
 
-.task .taskProgress {
-  width: 100%;
-  margin-top: 20px;
+.taskTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
 }
 
-.task .taskProgressBar {
-  height: 100%;
-  border-radius: 5px;
-  background-color: #0070f3;
+.taskDueDate {
+  font-style: italic;
+  margin-bottom: 0.5rem;
 }
 
-.task-title {
-  font-weight: bold;
-  text-align: left;
+.taskAssignedTo {
+  margin-bottom: 0.5rem;
 }
 
-.task-due-date {
-  text-align: right;
+.taskCategory {
+  margin-bottom: 0.5rem;
 }
 
-.completed {
-  text-decoration: line-through;
-  color: gray;
+.taskPriority {
+  margin-bottom: 0.5rem;
 }
 
 .taskProgress {
-  width: 50%;
-  height: 30px;
-  background-color: #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.taskProgressBar {
-  height: 100%;
-  border-radius: 5px;
-  background-color: #0070f3;
-}
-
-.taskCompleted {
-  font-size: 14px;
-  margin-top: 5px;
-  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .taskProgressLabel {
-  font-size: 14px;
-  margin-bottom: 5px;
+  display: inline-block;
+  width: 8rem;
+}
+
+.taskProgressBar {
+  background-color: #6ac2ff;
+  height: 1rem;
+  min-width: 5%;
+}
+
+.taskProgressBarContainer {
+  position: relative;
+  height: 1rem;
+  width: 200px;
+}
+
+.taskProgressValue {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  width: 100%;
   text-align: center;
 }
 
+.taskCompleted {
+  margin-bottom: 0.5rem;
+}
+
+.searchContainer {
+  margin-bottom: 1rem;
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.priorityFilter {
+  margin-right: 1rem;
+}
+
+.sortOrder {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.sortOrder label {
+  margin-right: 0.5rem;
+}
