@@ -11,9 +11,17 @@ const TodoList = () => {
   const [priorityFilter, setPriorityFilter] = useState(0); // default to no filter
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
+  const CATEGORIES_DICT = {
+    0: 'Backend',
+    1: 'Frontend',
+    2: 'Database',
+    3: 'Python',
+    4: 'Javascript',
+  };
 
   const updateTask = async (taskId, completedPercentage) => {
     try {
+      completedPercentage = Math.max(0, Math.min(100, completedPercentage)); // Constrain completedPercentage to between 0 and 100
       const response = await axios.put(
         `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
         { completed_percentage: completedPercentage }
@@ -131,7 +139,7 @@ const TodoList = () => {
                 <h3 className={styles.taskTitle}>{task.title}</h3>
                 <p className={styles.taskDueDate}>Due Date: {task.due_date}</p>
                 <p className={styles.taskAssignedTo}>Assigned to: {users[task.assigned_to]?.username}</p>
-                <p className={styles.taskCategory}>Category: {task.category}</p>
+                <p className={styles.taskCategory}>Category: {CATEGORIES_DICT[task.category]}</p>
                 <p className={styles.taskPriority}>Priority: {task.priority}</p>
                 <div className={styles.taskProgress}>
                   <div className={styles.taskProgressLabel}>Percent completed:</div>
@@ -140,6 +148,10 @@ const TodoList = () => {
                       className={styles.taskProgressBar}
                       style={{ width: `${Math.max(task.completed_percentage, 5)}%` }}
                     />
+                    <div className={styles.taskProgressValue}>{task.completed_percentage}%</div>
+                    <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage - 10)}>
+                      -10%
+                    </button>
                     <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage + 10)}>
                       +10%
                     </button>
