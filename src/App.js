@@ -6,6 +6,7 @@ import './api/axiosDefault'
 import SignInForm from "./pages/auth/SignInForm";
 import ToDoList from "./pages/posts/ToDoList"
 import CreateTask from "./pages/posts/CreateTask";
+import SearchToDoList from "./pages/posts/SearchToDoList";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/todolist" render={() => <ToDoList /> } />
           <Route exact path="/createtask" render={() => <CreateTask /> } />
+          <Route exact path="/searchuser" render={() => <SearchToDoList />} />
           <Route render={() => <p>Page not found!</p>} />
         </Switch>
       </Container>

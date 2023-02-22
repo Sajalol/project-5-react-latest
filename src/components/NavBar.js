@@ -34,6 +34,13 @@ const NavBar = () => {
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
+        to="/searchuser"
+      >
+        <i className="fa-solid fa-circle-plus"></i>Search User Tasks
+      </NavLink>
+      <NavLink
+        className={styles.NavLink}
+        activeClassName={styles.Active}
         to="/createtask"
       >
         <i className="fa-solid fa-circle-plus"></i>Create task

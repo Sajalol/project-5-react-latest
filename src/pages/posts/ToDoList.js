@@ -124,7 +124,7 @@ const TodoList = () => {
             </select>
           </div>
           <div className={styles.sortOrder}>
-            <label>Sort date:</label>
+            <label>Sort:</label>
             <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
