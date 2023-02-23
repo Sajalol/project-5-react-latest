@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../../styles/ToDoList.module.css';
+import styles from '../../styles/SearchToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 
 const SearchToDoList = () => {
@@ -20,20 +20,6 @@ const SearchToDoList = () => {
     4: 'Javascript',
   };
 
-  const updateTask = async (taskId, completedPercentage) => {
-    try {
-      completedPercentage = Math.max(0, Math.min(100, completedPercentage)); // Constrain completedPercentage to between 0 and 100
-      const response = await axios.put(
-        `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
-        { completed_percentage: completedPercentage }
-      );
-      // Update the tasks state with the updated task
-      setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
-    } catch (error) {
-      console.error(error);
-      setError('Could not update task');
-    }
-  }
   const currentUser = useCurrentUser();
 
   useEffect(() => {
@@ -85,115 +71,115 @@ const SearchToDoList = () => {
     : filteredTasks;
 
   // apply sort order and field if set
-const sortedFilteredTasks = filteredTasksByUser.sort((a, b) => {
-  const fieldToSortBy = sortField === 'category'
-    ? task => CATEGORIES_DICT[task.category]
-    : task => task[sortField];
+  const sortedFilteredTasks = filteredTasksByUser.sort((a, b) => {
+    const fieldToSortBy = sortField === 'category'
+      ? task => CATEGORIES_DICT[task.category]
+      : task => task[sortField];
 
-  const valA = fieldToSortBy(a);
-  const valB = fieldToSortBy(b);
+    const valA = fieldToSortBy(a);
+    const valB = fieldToSortBy(b);
 
-  if (valA > valB) {
-    return sortOrder === 'asc' ? 1 : -1;
-  } else if (valB > valA) {
-    return sortOrder === 'asc' ? -1 : 1;
+    if (valA > valB) {
+      return sortOrder === 'asc' ? 1 : -1;
+    } else if (valB > valA) {
+      return sortOrder === 'asc' ? -1 : 1;
+    } else {
+      return 0;
+    }
+  });
+
+  // determine which field to sort by
+  let fieldToSortBy;
+  if (sortField === 'category') {
+    fieldToSortBy = task => task.category;
+  } else if (sortField === 'assigned_to') {
+    fieldToSortBy = task => users[task.assigned_to]?.username;
   } else {
-    return 0;
+    fieldToSortBy = task => task[sortField];
   }
-});
 
-// determine which field to sort by
-let fieldToSortBy;
-if (sortField === 'category') {
-fieldToSortBy = task => task.category;
-} else if (sortField === 'assigned_to') {
-fieldToSortBy = task => users[task.assigned_to]?.username;
-} else {
-fieldToSortBy = task => task[sortField];
-}
+  // sort tasks based on sort order and field
+  const sortedTasks = sortOrder === 'asc'
+    ? sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) > fieldToSortBy(b) ? 1 : -1)
+    : sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) < fieldToSortBy(b) ? 1 : -1);
 
-// sort tasks based on sort order and field
-const sortedTasks = sortOrder === 'asc'
-  ? sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) > fieldToSortBy(b) ? 1 : -1)
-  : sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) < fieldToSortBy(b) ? 1 : -1);
+    return (
+      <div className={styles.todoList}>
+        <h1>Users Task List</h1>
+        <div className={styles.filters}>
+          <div className={styles.filter}>
+            <label htmlFor="search">Search:</label>
+            <input type="text" id="search" value={searchTerm} onChange={event => setSearchTerm(event.target.value)} />
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="priority">Priority:</label>
+            <select id="priority" value={priorityFilter} onChange={event => setPriorityFilter(Number(event.target.value))}>
+              <option value="0">No filter</option>
+              {[1, 2, 3].map(priority => (
+                <option key={priority} value={priority}>{priority}</option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="assignedTo">Assigned to:</label>
+            <select id="assignedTo" value={assignedToFilter} onChange={event => setAssignedToFilter(Number(event.target.value))}>
+              <option value="0">No filter</option>
+              {Object.values(users).map(user => (
+                <option key={user.id} value={user.id}>{user.username}</option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="sortField">Sort by:</label>
+            <select id="sortField" value={sortField} onChange={event => setSortField(event.target.value)}>
+              <option value="priority">Priority</option>
+              <option value="due_date">Due Date</option>
+              <option value="category">Category</option>
+              <option value="assigned_to">Assigned To</option>
+            </select>
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="sortOrder">Sort order:</label>
+            <select id="sortOrder" value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+        </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th className={styles.id}>ID</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Priority</th>
+              <th>Due Date</th>
+              <th>Category</th>
+              <th>Assigned To</th>
+              <th>Completed Percentage</th>
+              <th>Task Completed</th>
+            </tr>
+          </thead>
+        <tbody>
+              {sortedTasks
+                .filter(task => task.title.toLowerCase().includes(searchTerm.toLowerCase()))
+                .map(task => (
+                  <tr key={task.id}>
+                    <td className={styles.id}>{task.id}</td>
 
-return (
-<div className={styles.todoList}>
-<h1>Todo List</h1>
-<div className={styles.filters}>
-<div className={styles.filter}>
-<label htmlFor="search">Search:</label>
-<input type="text" id="search" value={searchTerm} onChange={event => setSearchTerm(event.target.value)} />
-</div>
-<div className={styles.filter}>
-<label htmlFor="priority">Priority:</label>
-<select id="priority" value={priorityFilter} onChange={event => setPriorityFilter(Number(event.target.value))}>
-<option value="0">No filter</option>
-{[1, 2, 3].map(priority => (
-<option key={priority} value={priority}>{priority}</option>
-))}
-</select>
-</div>
-<div className={styles.filter}>
-<label htmlFor="assignedTo">Assigned to:</label>
-<select id="assignedTo" value={assignedToFilter} onChange={event => setAssignedToFilter(Number(event.target.value))}>
-<option value="0">No filter</option>
-{Object.values(users).map(user => (
-<option key={user.id} value={user.id}>{user.username}</option>
-))}
-</select>
-</div>
-<div className={styles.filter}>
-<label htmlFor="sortField">Sort by:</label>
-<select id="sortField" value={sortField} onChange={event => setSortField(event.target.value)}>
-<option value="priority">Priority</option>
-<option value="due_date">Due Date</option>
-<option value="category">Category</option>
-<option value="assigned_to">Assigned To</option>
-</select>
-</div>
-<div className={styles.filter}>
-<label htmlFor="sortOrder">Sort order:</label>
-<select id="sortOrder" value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
-<option value="asc">Ascending</option>
-<option value="desc">Descending</option>
-</select>
-</div>
-</div>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Title</th>
-<th>Description</th>
-<th>Priority</th>
-<th>Due Date</th>
-<th>Category</th>
-<th>Assigned To</th>
-<th>Completed Percentage</th>
-</tr>
-</thead>
-<tbody>
-{sortedTasks
-.filter(task => task.title.toLowerCase().includes(searchTerm.toLowerCase()))
-.map(task => (
-<tr key={task.id}>
-<td>{task.id}</td>
-
-<td>{task.title}</td>
-<td>{task.description}</td>
-<td>{task.priority}</td>
-<td>{task.due_date}</td>
-<td>{CATEGORIES_DICT[task.category]}</td>
-<td>{users[task.assigned_to]?.username || 'Unassigned'}</td>
-<td>
-  <input type="number" min="0" max="100" value={task.completed_percentage} onChange={event => updateTask(task.id, event.target.value)} />
-</td>
-</tr>
-))}
-</tbody>
-</table>
-</div>
-);
+                    <td className={styles.title}>{task.title}</td>
+                    <td className={styles.description}>{task.description}</td>
+                    <td className={styles.priority}>{task.priority}</td>
+                    <td className={styles.dueDate}>{task.due_date}</td>
+                    <td className={styles.category}>{CATEGORIES_DICT[task.category]}</td>
+                    <td className={styles.assignedTo}>{users[task.assigned_to]?.username || 'Unassigned'}</td>
+                    <td className={styles.completedPercentage}>{task.completed_percentage}%</td>
+                    <td className={styles.completed}>{task.completed ? 'Yes' : 'No'}</td>
+                  </tr>
+                ))}
+            </tbody>
+      </table>
+    </div>
+  );
 };
 export default SearchToDoList;

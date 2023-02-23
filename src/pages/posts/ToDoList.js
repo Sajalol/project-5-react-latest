@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../styles/ToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
+import { Select } from 'antd';
+const { Option } = Select;
+
+
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
@@ -32,7 +36,21 @@ const TodoList = () => {
       console.error(error);
       setError('Could not update task');
     }
-  }
+  };
+  
+  const updateAssignedTo = async (taskId, assignedTo) => {
+    try {
+      const response = await axios.put(
+        `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
+        { assigned_to: assignedTo }
+      );
+      // Update the tasks state with the updated task
+      setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
+    } catch (error) {
+      console.error(error);
+      setError('Could not update task');
+    }
+  };
   const currentUser = useCurrentUser();
 
   useEffect(() => {
@@ -138,7 +156,17 @@ const TodoList = () => {
               <li key={task.id} className={styles.task}>
                 <h3 className={styles.taskTitle}>{task.title}</h3>
                 <p className={styles.taskDueDate}>Due Date: {task.due_date}</p>
-                <p className={styles.taskAssignedTo}>Assigned to: {users[task.assigned_to]?.username}</p>
+                <div className={styles.taskAssignedTo}>
+                        <label>Assigned to:</label>
+                        <Select
+                          value={task.assigned_to}
+                          onChange={newAssignedTo => updateAssignedTo(task.id, newAssignedTo)}
+                        >
+                          {Object.values(users).map(user => (
+                            <Option key={user.id} value={user.id}>{user.username}</Option>
+                          ))}
+                        </Select>
+                      </div>
                 <p className={styles.taskCategory}>Category: {CATEGORIES_DICT[task.category]}</p>
                 <p className={styles.taskPriority}>Priority: {task.priority}</p>
                 <div className={styles.taskProgress}>
