@@ -205,22 +205,22 @@ const CreateTask = () => {
   
   
           <label htmlFor="attachments-input">
-              Attachments:
-              <button
+        Attachments: {formData.fileName && `(${formData.fileName})`}
+        <button
                 className={`${btnStyles.Button} ${btnStyles.Bright} ${styles.UploadButton}`}
                 type="button"
                 onClick={() => document.getElementById("attachments-input").click()}
               >
                 Upload
               </button>
-              <input
-                id="attachments-input"
-                name="attachments"
-                type="file"
-                onChange={onAttachmentChange}
-                style={{ display: 'none' }}
-              />
-            </label>
+        <input
+          id="attachments-input"
+          name="attachments"
+          type="file"
+          onChange={onAttachmentChange}
+          style={{ display: 'none' }}
+        />
+      </label>
   
           <label>Category:</label>
           <Select
