@@ -15,6 +15,7 @@ const TodoList = () => {
   const [priorityFilter, setPriorityFilter] = useState(0); // default to no filter
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
+  const [showCompletedTasks, setShowCompletedTasks] = useState(true); // default to showing completed tasks
   const CATEGORIES_DICT = {
     0: 'Backend',
     1: 'Frontend',
@@ -26,9 +27,10 @@ const TodoList = () => {
   const updateTask = async (taskId, completedPercentage) => {
     try {
       completedPercentage = Math.max(0, Math.min(100, completedPercentage)); // Constrain completedPercentage to between 0 and 100
+      const completed = completedPercentage === 100 ? true : false; // Set completed to true if completedPercentage is 100, otherwise false
       const response = await axios.put(
         `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
-        { completed_percentage: completedPercentage }
+        { completed_percentage: completedPercentage, completed: completed }
       );
       // Update the tasks state with the updated task
       setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
@@ -68,28 +70,28 @@ const TodoList = () => {
       const getTasks = async () => {
         try {
           const results = [];
-          let nextPage = 'https://rest-api-project5.herokuapp.com/todo/task-list/';
-
+          let nextPage = `https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}`;
+    
           while (nextPage) {
             const res = await axios.get(nextPage);
             results.push(...res.data.results);
             nextPage = res.data.next;
           }
-
+    
           setTasks(results);
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');
         }
       };
-
+    
       getTasks();
     }
   }, [currentUser]);
 
   if (error) return <p>{error}</p>;
 
-  const completedTasks = tasks.filter(task => !task.completed);
+  const completedTasks = showCompletedTasks ? tasks : tasks.filter(task => !task.completed);
 
   // apply priority filter if set
   const filteredTasks = priorityFilter > 0
@@ -147,6 +149,10 @@ const TodoList = () => {
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="showCompletedTasks">Show completed tasks:</label>
+            <input type="checkbox" id="showCompletedTasks" checked={showCompletedTasks} onChange={event => setShowCompletedTasks(event.target.checked)} />
           </div>
         </div>
         <p>Total tasks: {filteredTasksByTitle.length}</p>

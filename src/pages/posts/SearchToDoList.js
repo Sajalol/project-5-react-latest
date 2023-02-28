@@ -12,6 +12,7 @@ const SearchToDoList = () => {
   const [assignedToFilter, setAssignedToFilter] = useState(0); // default to no filter
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
+  const [showCompletedTasks, setShowCompletedTasks] = useState(true); // default to showing completed tasks
   const CATEGORIES_DICT = {
     0: 'Backend',
     1: 'Frontend',
@@ -58,7 +59,7 @@ const SearchToDoList = () => {
 
   if (error) return <p>{error}</p>;
 
-  const completedTasks = tasks.filter(task => !task.completed);
+  const completedTasks = showCompletedTasks ? tasks : tasks.filter(task => !task.completed);
 
   // apply priority filter if set
   const filteredTasks = priorityFilter > 0
@@ -144,6 +145,10 @@ const SearchToDoList = () => {
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="showCompletedTasks">Show completed tasks:</label>
+            <input type="checkbox" id="showCompletedTasks" checked={showCompletedTasks} onChange={event => setShowCompletedTasks(event.target.checked)} />
           </div>
         </div>
         <table className={styles.table}>
