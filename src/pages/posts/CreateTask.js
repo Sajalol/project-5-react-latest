@@ -23,6 +23,7 @@ const CreateTask = () => {
     assigned_to: '',
     category: '',
     priority: '',
+    attachments: null, // Change this line
     completed: false,
     completed_percentage: 0,
   });
@@ -71,6 +72,12 @@ const CreateTask = () => {
     setFormData({ ...formData, completed_percentage: event.target.value });
   };
 
+  const onAttachmentChange = (event) => {
+    const file = event.target.files[0];
+    const fileName = file.name; // Get the name of the uploaded file
+    setFormData({ ...formData, attachments: file, fileName: fileName }); // Add the filename to the form data
+  };
+
    // Validation fields to confirm all fields are filled out 
   const validateFields = () => {
     const { title, content, assigned_to, category, priority, due_date } = formData;
@@ -86,37 +93,56 @@ const CreateTask = () => {
     event.preventDefault();
     
     if (!validateFields()) {
-    // show error message
-    Swal.fire({
-    title: 'Error!',
-    text: 'Please fill out all the fields.',
-    icon: 'error',
-    confirmButtonColor: '#222635',
-    confirmButtonText: 'OK',
-    });
-    return;
+      // show error message
+      Swal.fire({
+        title: 'Error!',
+        text: 'Please fill out all the fields.',
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+      return;
     }
-    
-    axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', formData)
+  
+    const form = new FormData();
+    form.append('title', formData.title);
+    form.append('content', formData.content);
+    form.append('due_date', formData.due_date);
+    form.append('created_by', currentUser?.pk);
+    form.append('assigned_to', formData.assigned_to);
+    form.append('category', formData.category);
+    form.append('priority', formData.priority);
+    form.append('completed', formData.completed);
+    form.append('completed_percentage', formData.completed_percentage);
+    if (formData.attachments) {
+      form.append('attachments', formData.attachments, formData.fileName); // Use formData.fileName to set the filename
+    }
+  
+    axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
     .then((result) => {
-    Swal.fire({
-    title: 'Submitted successfully!',
-    icon: 'success',
-    confirmButtonColor: '#222635',
-    confirmButtonText: 'OK',
-    });
-    // reset the form data
-    setFormData({
-    title: '',
-    content: '',
-    due_date: '',
-    created_by: currentUser?.pk,
-    assigned_to: '',
-    category: '',
-    priority: '',
-    completed: false,
-    completed_percentage: 0,
-    });
+      Swal.fire({
+        title: 'Submitted successfully!',
+        icon: 'success',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+      // reset the form data
+      setFormData({
+        title: '',
+        content: '',
+        due_date: '',
+        created_by: currentUser?.pk,
+        assigned_to: '',
+        category: '',
+        priority: '',
+        attachments: null,
+        completed: false,
+        completed_percentage: 0,
+      });
     }).catch((error) => {
       console.error('Error creating task:', error);
       // show error message
@@ -178,12 +204,23 @@ const CreateTask = () => {
           </Select>
   
   
-          {/* <label>Attachements:</label>
-          <Input
-            name="attachements"
-            value={formData.attachements}
-            onChange={onFormChange}
-          />  */}
+          <label htmlFor="attachments-input">
+              Attachments:
+              <button
+                className={`${btnStyles.Button} ${btnStyles.Bright} ${styles.UploadButton}`}
+                type="button"
+                onClick={() => document.getElementById("attachments-input").click()}
+              >
+                Upload
+              </button>
+              <input
+                id="attachments-input"
+                name="attachments"
+                type="file"
+                onChange={onAttachmentChange}
+                style={{ display: 'none' }}
+              />
+            </label>
   
           <label>Category:</label>
           <Select

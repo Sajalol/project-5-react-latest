@@ -39,3 +39,12 @@
   margin-top: 10px;
 }
 
+.attachmentsLabel {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.UploadButton {
+  font-size: 0.95rem;
+  padding: 0.4rem 1rem;
+}

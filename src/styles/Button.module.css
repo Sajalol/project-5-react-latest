@@ -69,3 +69,8 @@
     background-color: #222635;
     color: #fafafa;
   }
+
+  .UploadButton {
+    font-size: 1rem;
+    padding: 0.4rem 1rem;
+  }
