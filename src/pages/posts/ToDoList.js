@@ -161,9 +161,10 @@ const TodoList = () => {
             filteredTasksByTitle.map(task => (
               <li key={task.id} className={styles.task}>
                 <h3 className={styles.taskTitle}>{task.title}</h3>
-                <p className={styles.taskDueDate}>Due Date: {task.due_date}</p>
+                <p className={styles.taskContent}>{task.content}</p>
+                <p className={styles.taskDueDate}><strong>Due Date:</strong><br/>{task.due_date}</p>
                 <div className={styles.taskAssignedTo}>
-                        <label>Assigned to:</label>
+                        <label><strong>Assigned to:</strong></label>
                         <Select
                           value={task.assigned_to}
                           onChange={newAssignedTo => updateAssignedTo(task.id, newAssignedTo)}
@@ -173,10 +174,10 @@ const TodoList = () => {
                           ))}
                         </Select>
                       </div>
-                <p className={styles.taskCategory}>Category: {CATEGORIES_DICT[task.category]}</p>
-                <p className={styles.taskPriority}>Priority: {task.priority}</p>
+                <p className={styles.taskCategory}><strong>Category:</strong><br/>{CATEGORIES_DICT[task.category]}</p>
+                <p className={styles.taskPriority}><strong>Priority:</strong><br/>{task.priority}</p>
                 <div className={styles.taskProgress}>
-                  <div className={styles.taskProgressLabel}>Percent completed:</div>
+                  <div className={styles.taskProgressLabel}><strong>Percent completed:</strong></div>
                   <div className={styles.taskProgressBarContainer}>
                     <div
                       className={styles.taskProgressBar}
@@ -191,7 +192,7 @@ const TodoList = () => {
                     </button>
                   </div>
                 </div>
-                <p className={styles.taskCompleted}>Completed: {task.completed ? 'Yes' : 'No'}</p>
+                <p className={styles.taskCompleted}><strong>Completed:</strong><br/>{task.completed ? 'Yes' : 'No'}</p>
               </li>
             ))
           ) : (
