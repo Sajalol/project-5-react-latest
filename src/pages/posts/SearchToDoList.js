@@ -173,7 +173,7 @@ const SearchToDoList = () => {
                     <td className={styles.id}>{task.id}</td>
 
                     <td className={styles.title}>{task.title}</td>
-                    <td className={styles.description}>{task.description}</td>
+                    <td className={styles.content}>{task.content}</td>
                     <td className={styles.priority}>{task.priority}</td>
                     <td className={styles.dueDate}>{task.due_date}</td>
                     <td className={styles.category}>{CATEGORIES_DICT[task.category]}</td>
