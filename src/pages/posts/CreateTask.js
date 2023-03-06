@@ -114,13 +114,15 @@ const CreateTask = () => {
     form.append('priority', formData.priority);
     form.append('completed', formData.completed);
     form.append('completed_percentage', formData.completed_percentage);
+    form.append('attachments', formData.attachments);
+    form.append('filename', formData.fileName); // always append fileName
     if (formData.attachments) {
       form.append('attachments', formData.attachments, formData.fileName); // Use formData.fileName to set the filename
     }
   
     axios.post('https://rest-api-project5.herokuapp.com/todo/task-create/', form, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>'
       }
     })
     .then((result) => {

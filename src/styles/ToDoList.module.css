@@ -127,3 +127,12 @@
 .sortOrder label {
   margin-right: 0.5rem;
 }
+
+.taskAttachments {
+  margin-top: 10px;
+}
+
+.taskAttachments a {
+  display: block;
+  margin-top: 5px;
+}
