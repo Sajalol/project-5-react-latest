@@ -23,7 +23,7 @@ const CreateTask = () => {
     assigned_to: '',
     category: '',
     priority: '',
-    attachments: null, // Change this line
+    attachments: null, 
     completed: false,
     completed_percentage: 0,
   });
@@ -74,8 +74,8 @@ const CreateTask = () => {
 
   const onAttachmentChange = (event) => {
     const file = event.target.files[0];
-    const fileName = file.name; // Get the name of the uploaded file
-    setFormData({ ...formData, attachments: file, fileName: fileName }); // Add the filename to the form data
+    const fileName = file.name; 
+    setFormData({ ...formData, attachments: file, fileName: fileName }); 
   };
 
    // Validation fields to confirm all fields are filled out 
@@ -114,8 +114,6 @@ const CreateTask = () => {
     form.append('priority', formData.priority);
     form.append('completed', formData.completed);
     form.append('completed_percentage', formData.completed_percentage);
-    form.append('attachments', formData.attachments);
-    form.append('filename', formData.fileName); // always append fileName
     if (formData.attachments) {
       form.append('attachments', formData.attachments, formData.fileName); // Use formData.fileName to set the filename
     }
