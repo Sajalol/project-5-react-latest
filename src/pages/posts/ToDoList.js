@@ -176,6 +176,16 @@ const TodoList = () => {
                       </div>
                 <p className={styles.taskCategory}><strong>Category:</strong><br/>{CATEGORIES_DICT[task.category]}</p>
                 <p className={styles.taskPriority}><strong>Priority:</strong><br/>{task.priority}</p>
+                <div className={styles.taskAttachment}>
+                      {task.attachments ? (
+                          <div className={styles.taskAttachment}>
+                              <p>Attachment: {task.attachments.name ? task.attachments.name : 'No name'}</p>
+                              <a href={task.attachments.url} download>Download</a>
+                          </div>
+                      ) : (
+                          <p>No attachment</p>
+                      )}
+                  </div>
                 <div className={styles.taskProgress}>
                   <div className={styles.taskProgressLabel}><strong>Percent completed:</strong></div>
                   <div className={styles.taskProgressBarContainer}>
