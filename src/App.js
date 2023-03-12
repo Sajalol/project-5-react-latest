@@ -7,6 +7,7 @@ import SignInForm from "./pages/auth/SignInForm";
 import ToDoList from "./pages/posts/ToDoList"
 import CreateTask from "./pages/posts/CreateTask";
 import SearchToDoList from "./pages/posts/SearchToDoList";
+import HomePage from "./pages/posts/HomePage";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <NavBar />
       <Container className={styles.Main}>
         <Switch>
-          <Route exact path="/" render={() => <h1>Home page</h1>} />
+          <Route exact path="/" render={() => <HomePage />} />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/todolist" render={() => <ToDoList /> } />
           <Route exact path="/createtask" render={() => <CreateTask /> } />
