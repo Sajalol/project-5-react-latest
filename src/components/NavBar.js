@@ -29,21 +29,21 @@ const NavBar = () => {
         activeClassName={styles.Active}
         to="/todolist"
       >
-        <i className="fas fa-stream"></i>My to do list
+        <i className="fa-solid fa-list"></i>My to do list
       </NavLink>
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
         to="/searchuser"
       >
-        <i className="fa-solid fa-circle-plus"></i>Search User Tasks
+        <i className="fa-solid fa-list-check"></i>Search User Tasks
       </NavLink>
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
         to="/createtask"
       >
-        <i className="fa-solid fa-circle-plus"></i>Create task
+        <i className="fa-solid fa-plus"></i>Create task
       </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
