@@ -161,6 +161,7 @@ const SearchToDoList = () => {
               <th>Due Date</th>
               <th>Category</th>
               <th>Assigned To</th>
+              <th>Attachments</th>
               <th>Completed Percentage</th>
               <th>Task Completed</th>
             </tr>
@@ -171,13 +172,22 @@ const SearchToDoList = () => {
                 .map(task => (
                   <tr key={task.id}>
                     <td className={styles.id}>{task.id}</td>
-
                     <td className={styles.title}>{task.title}</td>
                     <td className={styles.content}>{task.content}</td>
                     <td className={styles.priority}>{task.priority}</td>
                     <td className={styles.dueDate}>{task.due_date}</td>
                     <td className={styles.category}>{CATEGORIES_DICT[task.category]}</td>
                     <td className={styles.assignedTo}>{users[task.assigned_to]?.username || 'Unassigned'}</td>
+                    <td className={styles.taskAttachment}>
+                      {task.attachments ? (
+                          <div className={styles.taskAttachment}>
+                              <p>{task.attachments.name ? task.attachments.name : 'No name'}</p>
+                              <a href={task.attachments.url} download>Download</a>
+                          </div>
+                      ) : (
+                          <p>No attachment</p>
+                      )}
+                  </td>
                     <td className={styles.completedPercentage}>{task.completed_percentage}%</td>
                     <td className={styles.completed}>{task.completed ? 'Yes' : 'No'}</td>
                   </tr>
