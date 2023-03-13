@@ -24,6 +24,8 @@ const SearchToDoList = () => {
   const currentUser = useCurrentUser();
 
   useEffect(() => {
+    console.log("Fetching users and tasks...");
+  
     const getUsers = async () => {
       const response = await axios.get('https://rest-api-project5.herokuapp.com/todo/users/');
       const usersData = response.data.reduce((acc, user) => {
@@ -33,26 +35,28 @@ const SearchToDoList = () => {
       setUsers(usersData);
     };
     getUsers();
-
+  
     if (currentUser) {
       const getTasks = async () => {
         try {
+          console.log("Fetching tasks...");
           const results = [];
           let nextPage = 'https://rest-api-project5.herokuapp.com/todo/task-list/';
-
+  
           while (nextPage) {
             const res = await axios.get(nextPage);
             results.push(...res.data.results);
             nextPage = res.data.next;
           }
-
+  
+          console.log(`Fetched ${results.length} tasks`);
           setTasks(results);
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');
         }
       };
-
+  
       getTasks();
     }
   }, [currentUser]);
@@ -179,14 +183,16 @@ const SearchToDoList = () => {
                     <td className={styles.category}>{CATEGORIES_DICT[task.category]}</td>
                     <td className={styles.assignedTo}>{users[task.assigned_to]?.username || 'Unassigned'}</td>
                     <td className={styles.taskAttachment}>
-                      {task.attachments ? (
-                          <div className={styles.taskAttachment}>
-                              <p>{task.attachments.name ? task.attachments.name : 'No name'}</p>
-                              <a href={task.attachments.url} download>Download</a>
-                          </div>
-                      ) : (
-                          <p>No attachment</p>
-                      )}
+                    {task.attachments ? (
+                      <div className={styles.taskAttachment}>
+                        <p>{task.attachments.name || 'No name'}</p>
+                        <a href={task.attachments.url} download={task.attachments.name}>
+                          Download
+                        </a>
+                      </div>
+                    ) : (
+                      <p>No attachment</p>
+                    )}
                   </td>
                     <td className={styles.completedPercentage}>{task.completed_percentage}%</td>
                     <td className={styles.completed}>{task.completed ? 'Yes' : 'No'}</td>
