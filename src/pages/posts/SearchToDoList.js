@@ -65,6 +65,12 @@ const SearchToDoList = () => {
 
   const completedTasks = showCompletedTasks ? tasks : tasks.filter(task => !task.completed);
 
+  const getAttachmentNameFromUrl = (url) => {
+    if (!url) return null;
+    const urlParts = url.split('/');
+    return urlParts[urlParts.length - 1];
+  };
+
   // apply priority filter if set
   const filteredTasks = priorityFilter > 0
     ? completedTasks.filter(task => task.priority === priorityFilter)
@@ -185,8 +191,8 @@ const SearchToDoList = () => {
                     <td className={styles.taskAttachment}>
                     {task.attachments ? (
                       <div className={styles.taskAttachment}>
-                        <p>{task.attachments.name || 'No name'}</p>
-                        <a href={task.attachments.url} download={task.attachments.name}>
+                        <p>{getAttachmentNameFromUrl(task.attachments) || 'No name'}</p>
+                        <a href={task.attachments} download={getAttachmentNameFromUrl(task.attachments)}>
                           Download
                         </a>
                       </div>

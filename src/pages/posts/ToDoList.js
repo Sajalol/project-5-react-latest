@@ -93,6 +93,12 @@ const TodoList = () => {
 
   const completedTasks = showCompletedTasks ? tasks : tasks.filter(task => !task.completed);
 
+  const getAttachmentNameFromUrl = (url) => {
+    if (!url) return null;
+    const urlParts = url.split('/');
+    return urlParts[urlParts.length - 1];
+  };
+
   // apply priority filter if set
   const filteredTasks = priorityFilter > 0
     ? completedTasks.filter(task => task.priority === priorityFilter)
@@ -176,15 +182,17 @@ const TodoList = () => {
                       </div>
                 <p className={styles.taskCategory}><strong>Category:</strong><br/>{CATEGORIES_DICT[task.category]}</p>
                 <p className={styles.taskPriority}><strong>Priority:</strong><br/>{task.priority}</p>
+                <div className={styles.taskAttachment}> <p><strong>Attachments:<br/></strong></p>
+                {task.attachments ? (
                 <div className={styles.taskAttachment}>
-                      {task.attachments ? (
-                          <div className={styles.taskAttachment}>
-                              <p>Attachment: {task.attachments.name ? task.attachments.name : 'No name'}</p>
-                              <a href={task.attachments} download>Download</a>
-                          </div>
-                      ) : (
-                          <p>No attachment</p>
-                      )}
+                  <p>{getAttachmentNameFromUrl(task.attachments) || 'No name'}</p>
+                  <a href={task.attachments} download={getAttachmentNameFromUrl(task.attachments)}>
+                    Download
+                  </a>
+                </div>
+              ) : (
+                <p>No attachment</p>
+              )}
                   </div>
                 <div className={styles.taskProgress}>
                   <div className={styles.taskProgressLabel}><strong>Percent completed:</strong></div>
