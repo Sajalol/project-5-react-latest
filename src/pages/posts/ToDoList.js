@@ -180,7 +180,7 @@ const TodoList = () => {
                       {task.attachments ? (
                           <div className={styles.taskAttachment}>
                               <p>Attachment: {task.attachments.name ? task.attachments.name : 'No name'}</p>
-                              <a href={task.attachments.url} download>Download</a>
+                              <a href={task.attachments} download>Download</a>
                           </div>
                       ) : (
                           <p>No attachment</p>
