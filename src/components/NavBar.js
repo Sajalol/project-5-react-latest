@@ -15,12 +15,13 @@ const NavBar = () => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post("/api/token/logout/");
+      await axios.post("dj-rest-auth/logout/");
       setCurrentUser(null);
     } catch (err) {
       console.log(err);
     }
   };
+
   const loggedInIcons = (
     <>
         <NavLink
@@ -86,7 +87,7 @@ const NavBar = () => {
               <i className="fas fa-home"></i>Home
             </NavLink>
 
-            {currentUser && currentUser.access ? loggedInIcons : loggedOutIcons}
+            {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
       </Container>
