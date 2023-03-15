@@ -70,7 +70,7 @@ const TodoList = () => {
       const getTasks = async () => {
         try {
           const results = [];
-          let nextPage = `https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}`;
+          let nextPage = `https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.user.pk}`;
     
           while (nextPage) {
             const res = await axios.get(nextPage);
