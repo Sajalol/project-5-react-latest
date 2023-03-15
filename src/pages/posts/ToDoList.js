@@ -16,6 +16,8 @@ const TodoList = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const CATEGORIES_DICT = {
     0: 'Backend',
     1: 'Frontend',
@@ -33,6 +35,11 @@ const TodoList = () => {
     const taskDueDate = new Date(task.due_date);
     return taskDueDate < today;
   };
+  const changePage = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  
 
   const updateTask = async (taskId, completedPercentage) => {
     try {
@@ -79,16 +86,9 @@ const TodoList = () => {
     if (currentUser) {
       const getTasks = async () => {
         try {
-          const results = [];
-          let nextPage = `https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}`;
-    
-          while (nextPage) {
-            const res = await axios.get(nextPage);
-            results.push(...res.data.results);
-            nextPage = res.data.next;
-          }
-    
-          setTasks(results);
+          const response = await axios.get(`https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}&page=${currentPage}`);
+          setTasks(response.data.results);
+          setTotalPages(Math.ceil(response.data.count / 10)); // Set the total pages using count from the API response and divide by the number of items per page
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');
@@ -97,7 +97,7 @@ const TodoList = () => {
     
       getTasks();
     }
-  }, [currentUser]);
+  }, [currentUser, currentPage]);
 
   if (error) return <p>{error}</p>;
 
@@ -172,6 +172,15 @@ const TodoList = () => {
           </div>
         </div>
         <p>Total tasks: {filteredTasksByTitle.length}</p>
+        <div className={styles.paginationControls}>
+        <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
         <ul className={styles.taskList}>
         {filteredTasksByTitle.length > 0 ? (
           filteredTasksByTitle.map(task => (
@@ -237,6 +246,15 @@ const TodoList = () => {
             <p>No tasks to show</p>
           )}
         </ul>
+        <div className={styles.paginationControls}>
+        <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
       </div>
     );
   };

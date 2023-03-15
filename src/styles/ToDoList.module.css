@@ -145,3 +145,10 @@
   color: red;
   font-weight: bold;
 }
+
+.paginationControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto; /* Add some margin at the top and bottom and center the element */
+}
