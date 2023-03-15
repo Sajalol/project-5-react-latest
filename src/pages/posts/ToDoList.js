@@ -30,7 +30,7 @@ const TodoList = () => {
     if (task.completed) {
       return false;
     }
-  
+
     const today = new Date();
     const taskDueDate = new Date(task.due_date);
     return taskDueDate < today;
@@ -39,7 +39,7 @@ const TodoList = () => {
     setCurrentPage(newPage);
   };
 
-  
+
 
   const updateTask = async (taskId, completedPercentage) => {
     try {
@@ -56,7 +56,7 @@ const TodoList = () => {
       setError('Could not update task');
     }
   };
-  
+
   const updateAssignedTo = async (taskId, assignedTo) => {
     try {
       const response = await axios.put(
@@ -94,7 +94,7 @@ const TodoList = () => {
           setError('Could not fetch tasks');
         }
       };
-    
+
       getTasks();
     }
   }, [currentUser, currentPage]);
@@ -139,40 +139,40 @@ const TodoList = () => {
           type="text"
           placeholder="Search tasks..."
           value={searchTerm}
-          onChange={event =>setSearchTerm(event.target.value)}
-          />
-        </div>
-        <div className={styles.filtersContainer}>
+          onChange={event => setSearchTerm(event.target.value)}
+        />
+      </div>
+      <div className={styles.filtersContainer}>
         <div className={styles.priorityFilter}>
-            <label>Priority filter:</label>
-            <select value={priorityFilter} onChange={event => setPriorityFilter(parseInt(event.target.value))}>
-              <option value={0}>No filter</option>
-              {[1, 2, 3, 4, 5].map(value => (
-                <option key={value} value={value}>{value}</option>
-              ))}
-            </select>
-          </div>
-          <div className={styles.sortOrder}>
-            <label>Sort by:</label>
-            <select value={sortField} onChange={event => setSortField(event.target.value)}>
-              <option value="priority">Priority</option>
-              <option value="due_date">Due date</option>
-            </select>
-          </div>
-          <div className={styles.sortOrder}>
-            <label>Sort:</label>
-            <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
-            </select>
-          </div>
-          <div className={styles.filter}>
-            <label htmlFor="showCompletedTasks">Show completed tasks:</label>
-            <input type="checkbox" id="showCompletedTasks" checked={showCompletedTasks} onChange={event => setShowCompletedTasks(event.target.checked)} />
-          </div>
+          <label>Priority filter:</label>
+          <select value={priorityFilter} onChange={event => setPriorityFilter(parseInt(event.target.value))}>
+            <option value={0}>No filter</option>
+            {[1, 2, 3, 4, 5].map(value => (
+              <option key={value} value={value}>{value}</option>
+            ))}
+          </select>
         </div>
-        <p>Total tasks: {filteredTasksByTitle.length}</p>
-        <div className={styles.paginationControls}>
+        <div className={styles.sortOrder}>
+          <label>Sort by:</label>
+          <select value={sortField} onChange={event => setSortField(event.target.value)}>
+            <option value="priority">Priority</option>
+            <option value="due_date">Due date</option>
+          </select>
+        </div>
+        <div className={styles.sortOrder}>
+          <label>Sort:</label>
+          <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+        <div className={styles.filter}>
+          <label htmlFor="showCompletedTasks">Show completed tasks:</label>
+          <input type="checkbox" id="showCompletedTasks" checked={showCompletedTasks} onChange={event => setShowCompletedTasks(event.target.checked)} />
+        </div>
+      </div>
+      <p>Total tasks: {filteredTasksByTitle.length}</p>
+      <div className={styles.paginationControls}>
         <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
@@ -181,72 +181,72 @@ const TodoList = () => {
           Next
         </button>
       </div>
-        <ul className={styles.taskList}>
+      <ul className={styles.taskList}>
         {filteredTasksByTitle.length > 0 ? (
           filteredTasksByTitle.map(task => (
             <li
               key={task.id}
               className={`${styles.task} ${isTaskOverdue(task) ? styles.overdue : ''}`}
             >
-                <h3 className={styles.taskTitle}>{task.title}</h3>
-                <p className={styles.taskContent}>{task.content}</p>
-                <p className={styles.taskDueDate}>
-                    <strong>Due Date:</strong>
-                    <br />
-                    {task.due_date}
-                  </p>
-                  {isTaskOverdue(task) && (
-                    <p className={styles.overdueText}>Task is overdue!</p>
-                  )}
-                <div className={styles.taskAssignedTo}>
-                        <label><strong>Assigned to:</strong></label>
-                        <Select
-                          value={task.assigned_to}
-                          onChange={newAssignedTo => updateAssignedTo(task.id, newAssignedTo)}
-                        >
-                          {Object.values(users).map(user => (
-                            <Option key={user.id} value={user.id}>{user.username}</Option>
-                          ))}
-                        </Select>
-                      </div>
-                <p className={styles.taskCategory}><strong>Category:</strong><br/>{CATEGORIES_DICT[task.category]}</p>
-                <p className={styles.taskPriority}><strong>Priority:</strong><br/>{task.priority}</p>
-                <div className={styles.taskAttachment}> <p><strong>Attachments:<br/></strong></p>
-                {task.attachments ? (
-                <div className={styles.taskAttachment}>
-                  <p>{getAttachmentNameFromUrl(task.attachments) || 'No name'}</p>
-                  <a href={task.attachments} download={getAttachmentNameFromUrl(task.attachments)}>
-                    Download
-                  </a>
-                </div>
-              ) : (
-                <p>No attachment</p>
+              <h3 className={styles.taskTitle}>{task.title}</h3>
+              <p className={styles.taskContent}>{task.content}</p>
+              <p className={styles.taskDueDate}>
+                <strong>Due Date:</strong>
+                <br />
+                {task.due_date}
+              </p>
+              {isTaskOverdue(task) && (
+                <p className={styles.overdueText}>Task is overdue!</p>
               )}
+              <div className={styles.taskAssignedTo}>
+                <label><strong>Assigned to:</strong></label>
+                <Select
+                  value={task.assigned_to}
+                  onChange={newAssignedTo => updateAssignedTo(task.id, newAssignedTo)}
+                >
+                  {Object.values(users).map(user => (
+                    <Option key={user.id} value={user.id}>{user.username}</Option>
+                  ))}
+                </Select>
+              </div>
+              <p className={styles.taskCategory}><strong>Category:</strong><br />{CATEGORIES_DICT[task.category]}</p>
+              <p className={styles.taskPriority}><strong>Priority:</strong><br />{task.priority}</p>
+              <div className={styles.taskAttachment}> <p><strong>Attachments:<br /></strong></p>
+                {task.attachments ? (
+                  <div className={styles.taskAttachment}>
+                    <p>{getAttachmentNameFromUrl(task.attachments) || 'No name'}</p>
+                    <a href={task.attachments} download={getAttachmentNameFromUrl(task.attachments)}>
+                      Download
+                    </a>
                   </div>
-                <div className={styles.taskProgress}>
-                  <div className={styles.taskProgressLabel}><strong>Percent completed:</strong></div>
-                  <div className={styles.taskProgressBarContainer}>
-                    <div
-                      className={styles.taskProgressBar}
-                      style={{ width: `${Math.max(task.completed_percentage, 5)}%` }}
-                    />
-                    <div className={styles.taskProgressValue}>{task.completed_percentage}%</div>
-                    <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage - 10)}>
-                      -10%
-                    </button>
-                    <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage + 10)}>
-                      +10%
-                    </button>
-                  </div>
+                ) : (
+                  <p>No attachment</p>
+                )}
+              </div>
+              <div className={styles.taskProgress}>
+                <div className={styles.taskProgressLabel}><strong>Percent completed:</strong></div>
+                <div className={styles.taskProgressBarContainer}>
+                  <div
+                    className={styles.taskProgressBar}
+                    style={{ width: `${Math.max(task.completed_percentage, 5)}%` }}
+                  />
+                  <div className={styles.taskProgressValue}>{task.completed_percentage}%</div>
+                  <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage - 10)}>
+                    -10%
+                  </button>
+                  <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage + 10)}>
+                    +10%
+                  </button>
                 </div>
-                <p className={styles.taskCompleted}><strong>Completed:</strong><br/>{task.completed ? 'Yes' : 'No'}</p>
-              </li>
-            ))
-          ) : (
-            <p>No tasks to show</p>
-          )}
-        </ul>
-        <div className={styles.paginationControls}>
+              </div>
+              <p className={styles.taskCompleted}><strong>Completed:</strong><br />{task.completed ? 'Yes' : 'No'}</p>
+            </li>
+          ))
+        ) : (
+          <p>No tasks to show</p>
+        )}
+      </ul>
+      <div className={styles.paginationControls}>
         <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
@@ -255,8 +255,8 @@ const TodoList = () => {
           Next
         </button>
       </div>
-      </div>
-    );
-  };
+    </div>
+  );
+};
 
-  export default TodoList;
+export default TodoList;
