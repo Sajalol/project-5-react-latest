@@ -15,13 +15,23 @@ const TodoList = () => {
   const [priorityFilter, setPriorityFilter] = useState(0); // default to no filter
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
-  const [showCompletedTasks, setShowCompletedTasks] = useState(true); // default to showing completed tasks
+  const [showCompletedTasks, setShowCompletedTasks] = useState(false);
   const CATEGORIES_DICT = {
     0: 'Backend',
     1: 'Frontend',
     2: 'Database',
     3: 'Python',
     4: 'Javascript',
+  };
+
+  const isTaskOverdue = (task) => {
+    if (task.completed) {
+      return false;
+    }
+  
+    const today = new Date();
+    const taskDueDate = new Date(task.due_date);
+    return taskDueDate < today;
   };
 
   const updateTask = async (taskId, completedPercentage) => {
@@ -163,12 +173,22 @@ const TodoList = () => {
         </div>
         <p>Total tasks: {filteredTasksByTitle.length}</p>
         <ul className={styles.taskList}>
-          {filteredTasksByTitle.length > 0 ? (
-            filteredTasksByTitle.map(task => (
-              <li key={task.id} className={styles.task}>
+        {filteredTasksByTitle.length > 0 ? (
+          filteredTasksByTitle.map(task => (
+            <li
+              key={task.id}
+              className={`${styles.task} ${isTaskOverdue(task) ? styles.overdue : ''}`}
+            >
                 <h3 className={styles.taskTitle}>{task.title}</h3>
                 <p className={styles.taskContent}>{task.content}</p>
-                <p className={styles.taskDueDate}><strong>Due Date:</strong><br/>{task.due_date}</p>
+                <p className={styles.taskDueDate}>
+                    <strong>Due Date:</strong>
+                    <br />
+                    {task.due_date}
+                  </p>
+                  {isTaskOverdue(task) && (
+                    <p className={styles.overdueText}>Task is overdue!</p>
+                  )}
                 <div className={styles.taskAssignedTo}>
                         <label><strong>Assigned to:</strong></label>
                         <Select
