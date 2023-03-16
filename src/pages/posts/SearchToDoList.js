@@ -48,18 +48,14 @@ const SearchToDoList = () => {
       const getTasks = async () => {
         try {
           console.log("Fetching tasks...");
-          let results = [];
-          let nextPage = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${searchTerm}&page=${currentPage}`;
-  
-          while (nextPage) {
-            const res = await axios.get(nextPage);
-            results.push(...res.data.results);
-            nextPage = res.data.next;
-          }
+          const url = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${searchTerm}&page=${currentPage}`;
+          const res = await axios.get(url);
+          const results = res.data.results;
+          setTotalPages(Math.ceil(res.data.count / 10));
   
           console.log(`Fetched ${results.length} tasks`);
           setTasks(results);
-          setTotalPages(Math.ceil(results.length / 10)); // Set the total pages using count from the API response and divide by the number of items per page
+          setTotalPages(Math.ceil(res.data.count / 10)) 
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');
