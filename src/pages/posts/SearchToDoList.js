@@ -13,6 +13,14 @@ const SearchToDoList = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
   const [showCompletedTasks, setShowCompletedTasks] = useState(true); // default to showing completed tasks
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const changePage = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   const CATEGORIES_DICT = {
     0: 'Backend',
     1: 'Frontend',
@@ -40,8 +48,8 @@ const SearchToDoList = () => {
       const getTasks = async () => {
         try {
           console.log("Fetching tasks...");
-          const results = [];
-          let nextPage = 'https://rest-api-project5.herokuapp.com/todo/task-list/';
+          let results = [];
+          let nextPage = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${searchTerm}&page=${currentPage}`;
   
           while (nextPage) {
             const res = await axios.get(nextPage);
@@ -51,6 +59,7 @@ const SearchToDoList = () => {
   
           console.log(`Fetched ${results.length} tasks`);
           setTasks(results);
+          setTotalPages(Math.ceil(results.length / 10)); // Set the total pages using count from the API response and divide by the number of items per page
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');
@@ -59,7 +68,7 @@ const SearchToDoList = () => {
   
       getTasks();
     }
-  }, [currentUser]);
+  }, [currentUser, searchTerm, currentPage]);
 
   if (error) return <p>{error}</p>;
 
@@ -115,6 +124,7 @@ const SearchToDoList = () => {
     : sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) < fieldToSortBy(b) ? 1 : -1);
 
     return (
+      
       <div className={styles.todoList}>
         <h1>Users Task List</h1>
         <div className={styles.filters}>
@@ -161,6 +171,15 @@ const SearchToDoList = () => {
             <input type="checkbox" id="showCompletedTasks" checked={showCompletedTasks} onChange={event => setShowCompletedTasks(event.target.checked)} />
           </div>
         </div>
+        <div className={styles.paginationControls}>
+          <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
+            Next
+          </button>
+        </div>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -206,6 +225,15 @@ const SearchToDoList = () => {
                 ))}
             </tbody>
       </table>
+      <div className={styles.paginationControls}>
+          <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
+            Next
+          </button>
+        </div>
     </div>
   );
 };
