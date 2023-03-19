@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import styles from '../../styles/ToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
@@ -35,13 +35,14 @@ const TodoList = () => {
     const taskDueDate = new Date(task.due_date);
     return taskDueDate < today;
   };
-  const changePage = (newPage) => {
+
+  const changePage = useCallback((newPage) => {
     setCurrentPage(newPage);
-  };
+  }, []);
 
 
 
-  const updateTask = async (taskId, completedPercentage) => {
+  const updateTask = useCallback(async (taskId, completedPercentage) => {
     try {
       completedPercentage = Math.max(0, Math.min(100, completedPercentage)); // Constrain completedPercentage to between 0 and 100
       const completed = completedPercentage === 100 ? true : false; // Set completed to true if completedPercentage is 100, otherwise false
@@ -49,15 +50,16 @@ const TodoList = () => {
         `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
         { completed_percentage: completedPercentage, completed: completed }
       );
+
       // Update the tasks state with the updated task
       setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
     } catch (error) {
       console.error(error);
       setError('Could not update task');
     }
-  };
+  }, []);
 
-  const updateAssignedTo = async (taskId, assignedTo) => {
+  const updateAssignedTo = useCallback(async (taskId, assignedTo) => {
     try {
       const response = await axios.put(
         `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
@@ -69,7 +71,8 @@ const TodoList = () => {
       console.error(error);
       setError('Could not update task');
     }
-  };
+  }, []);
+
   const currentUser = useCurrentUser();
 
   useEffect(() => {

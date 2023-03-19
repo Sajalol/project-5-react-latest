@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import styles from '../../styles/SearchToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
@@ -17,9 +17,9 @@ const SearchToDoList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const changePage = (newPage) => {
+  const changePage = useCallback((newPage) => {
     setCurrentPage(newPage);
-  };
+  }, []);
 
   const CATEGORIES_DICT = {
     0: 'Backend',
@@ -55,7 +55,6 @@ const SearchToDoList = () => {
   
           console.log(`Fetched ${results.length} tasks`);
           setTasks(results);
-          setTotalPages(Math.ceil(res.data.count / 10)) 
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');
