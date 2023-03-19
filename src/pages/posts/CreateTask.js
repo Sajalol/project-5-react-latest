@@ -4,7 +4,11 @@ import btnStyles from "../../styles/Button.module.css";
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 
-import { Select, Input, Checkbox, DatePicker } from 'antd';
+import Select from 'antd/lib/select';
+import Input from 'antd/lib/input';
+import Checkbox from 'antd/lib/checkbox';
+import DatePicker from 'antd/lib/date-picker';
+
 import axios from 'axios';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import moment from 'moment';
