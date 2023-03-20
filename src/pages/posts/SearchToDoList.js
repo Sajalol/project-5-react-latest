@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import useDebounce from '../../contexts/useDebounce';
 import axios from 'axios';
 import styles from '../../styles/SearchToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
@@ -13,6 +14,7 @@ const SearchToDoList = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
   const [showCompletedTasks, setShowCompletedTasks] = useState(true); // default to showing completed tasks
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -48,7 +50,7 @@ const SearchToDoList = () => {
       const getTasks = async () => {
         try {
           console.log("Fetching tasks...");
-          const url = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${searchTerm}&page=${currentPage}`;
+          const url = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${debouncedSearchTerm}&page=${currentPage}`;
           const res = await axios.get(url);
           const results = res.data.results;
           setTotalPages(Math.ceil(res.data.count / 10));
@@ -63,7 +65,7 @@ const SearchToDoList = () => {
   
       getTasks();
     }
-  }, [currentUser, searchTerm, currentPage]);
+  }, [currentUser, debouncedSearchTerm, currentPage]);
 
   if (error) return <p>{error}</p>;
 

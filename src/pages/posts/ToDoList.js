@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import useDebounce from '../../contexts/useDebounce';
 import axios from 'axios';
 import styles from '../../styles/ToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 import { Select } from 'antd';
 const { Option } = Select;
-
 
 
 const TodoList = () => {
@@ -18,6 +18,9 @@ const TodoList = () => {
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay
+
   const CATEGORIES_DICT = {
     0: 'Backend',
     1: 'Frontend',
@@ -89,7 +92,8 @@ const TodoList = () => {
     if (currentUser) {
       const getTasks = async () => {
         try {
-          const response = await axios.get(`https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}&page=${currentPage}`);
+          // Add `&search=${debouncedSearchTerm}` to the API request
+          const response = await axios.get(`https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}&page=${currentPage}&search=${debouncedSearchTerm}`);
           setTasks(response.data.results);
           setTotalPages(Math.ceil(response.data.count / 10)); // Set the total pages using count from the API response and divide by the number of items per page
         } catch (error) {
@@ -100,7 +104,7 @@ const TodoList = () => {
 
       getTasks();
     }
-  }, [currentUser, currentPage]);
+  }, [currentUser, currentPage, debouncedSearchTerm]);
 
   if (error) return <p>{error}</p>;
 
