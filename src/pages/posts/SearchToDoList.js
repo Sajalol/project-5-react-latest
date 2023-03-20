@@ -149,8 +149,8 @@ const SearchToDoList = () => {
                     {task.attachments ? (
                       <div className={styles.taskAttachment}>
                         <p>{getAttachmentNameFromUrl(task.attachments) || 'No name'}</p>
-                        <a href={task.attachments} download={getAttachmentNameFromUrl(task.attachments)}>
-                          Download
+                        <a href={task.attachments} target="_blank" rel="noopener noreferrer">
+                            View
                         </a>
                       </div>
                     ) : (
