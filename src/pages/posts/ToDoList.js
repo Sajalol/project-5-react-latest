@@ -19,7 +19,7 @@ const TodoList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay
+  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
 
   const CATEGORIES_DICT = {
     0: 'Backend',
@@ -92,10 +92,10 @@ const TodoList = () => {
     if (currentUser) {
       const getTasks = async () => {
         try {
-          // Add `&search=${debouncedSearchTerm}` to the API request
+          
           const response = await axios.get(`https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}&page=${currentPage}&search=${debouncedSearchTerm}`);
           setTasks(response.data.results);
-          setTotalPages(Math.ceil(response.data.count / 10)); // Set the total pages using count from the API response and divide by the number of items per page
+          setTotalPages(Math.ceil(response.data.count / 10));
         } catch (error) {
           console.error(error);
           setError('Could not fetch tasks');

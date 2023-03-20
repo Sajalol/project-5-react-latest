@@ -1,27 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import useDebounce from '../../contexts/useDebounce';
-import axios from 'axios';
+import useTasks from '../../contexts/useTasks';
 import styles from '../../styles/SearchToDoList.module.css';
-import { useCurrentUser } from '../../contexts/CurrentUserContext';
 
 const SearchToDoList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [users, setUsers] = useState({});
-  const [priorityFilter, setPriorityFilter] = useState(0); // default to no filter
-  const [assignedToFilter, setAssignedToFilter] = useState(0); // default to no filter
-  const [sortOrder, setSortOrder] = useState('asc'); // default to ascending order
-  const [sortField, setSortField] = useState('priority'); // default to sorting by priority
-  const [showCompletedTasks, setShowCompletedTasks] = useState(true); // default to showing completed tasks
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [priorityFilter, setPriorityFilter] = useState(0);
+  const [assignedToFilter, setAssignedToFilter] = useState(0);
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortField, setSortField] = useState('priority');
+  const [showCompletedTasks, setShowCompletedTasks] = useState(true);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const changePage = useCallback((newPage) => {
-    setCurrentPage(newPage);
-  }, []);
+  const { tasks, error, users, totalPages, currentPage, changePage } = useTasks(debouncedSearchTerm);
 
   const CATEGORIES_DICT = {
     0: 'Backend',
@@ -31,45 +22,34 @@ const SearchToDoList = () => {
     4: 'Javascript',
   };
 
-  const currentUser = useCurrentUser();
+  const filterAndSortTasks = (taskList) => {
+    let filteredTasks = showCompletedTasks ? taskList : taskList.filter(task => !task.completed);
 
-  useEffect(() => {
-    console.log("Fetching users and tasks...");
-  
-    const getUsers = async () => {
-      const response = await axios.get('https://rest-api-project5.herokuapp.com/todo/users/');
-      const usersData = response.data.reduce((acc, user) => {
-        acc[user.id] = user;
-        return acc;
-      }, {});
-      setUsers(usersData);
-    };
-    getUsers();
-  
-    if (currentUser) {
-      const getTasks = async () => {
-        try {
-          console.log("Fetching tasks...");
-          const url = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${debouncedSearchTerm}&page=${currentPage}`;
-          const res = await axios.get(url);
-          const results = res.data.results;
-          setTotalPages(Math.ceil(res.data.count / 10));
-  
-          console.log(`Fetched ${results.length} tasks`);
-          setTasks(results);
-        } catch (error) {
-          console.error(error);
-          setError('Could not fetch tasks');
-        }
-      };
-  
-      getTasks();
+    if (priorityFilter > 0) {
+      filteredTasks = filteredTasks.filter(task => task.priority === priorityFilter);
     }
-  }, [currentUser, debouncedSearchTerm, currentPage]);
 
-  if (error) return <p>{error}</p>;
+    if (assignedToFilter > 0) {
+      filteredTasks = filteredTasks.filter(task => task.assigned_to === assignedToFilter);
+    }
 
-  const completedTasks = showCompletedTasks ? tasks : tasks.filter(task => !task.completed);
+    return filteredTasks.sort((a, b) => {
+      const fieldToSortBy = sortField === 'category'
+        ? task => CATEGORIES_DICT[task.category]
+        : task => task[sortField];
+
+      const valA = fieldToSortBy(a);
+      const valB = fieldToSortBy(b);
+
+      if (valA > valB) {
+        return sortOrder === 'asc' ? 1 : -1;
+      } else if (valB > valA) {
+        return sortOrder === 'asc' ? -1 : 1;
+      } else {
+        return 0;
+      }
+    });
+  };
 
   const getAttachmentNameFromUrl = (url) => {
     if (!url) return null;
@@ -77,48 +57,9 @@ const SearchToDoList = () => {
     return urlParts[urlParts.length - 1];
   };
 
-  // apply priority filter if set
-  const filteredTasks = priorityFilter > 0
-    ? completedTasks.filter(task => task.priority === priorityFilter)
-    : completedTasks;
+  const sortedTasks = filterAndSortTasks(tasks);
 
-  // apply assigned to filter if set
-  const filteredTasksByUser = assignedToFilter > 0
-    ? filteredTasks.filter(task => task.assigned_to === assignedToFilter)
-    : filteredTasks;
-
-  // apply sort order and field if set
-  const sortedFilteredTasks = filteredTasksByUser.sort((a, b) => {
-    const fieldToSortBy = sortField === 'category'
-      ? task => CATEGORIES_DICT[task.category]
-      : task => task[sortField];
-
-    const valA = fieldToSortBy(a);
-    const valB = fieldToSortBy(b);
-
-    if (valA > valB) {
-      return sortOrder === 'asc' ? 1 : -1;
-    } else if (valB > valA) {
-      return sortOrder === 'asc' ? -1 : 1;
-    } else {
-      return 0;
-    }
-  });
-
-  // determine which field to sort by
-  let fieldToSortBy;
-  if (sortField === 'category') {
-    fieldToSortBy = task => task.category;
-  } else if (sortField === 'assigned_to') {
-    fieldToSortBy = task => users[task.assigned_to]?.username;
-  } else {
-    fieldToSortBy = task => task[sortField];
-  }
-
-  // sort tasks based on sort order and field
-  const sortedTasks = sortOrder === 'asc'
-    ? sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) > fieldToSortBy(b) ? 1 : -1)
-    : sortedFilteredTasks.sort((a, b) => fieldToSortBy(a) < fieldToSortBy(b) ? 1 : -1);
+  if (error) return <p>{error}</p>;
 
     return (
       
