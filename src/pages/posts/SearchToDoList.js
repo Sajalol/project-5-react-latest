@@ -79,7 +79,7 @@ const SearchToDoList = () => {
             <label htmlFor="priority">Priority:</label>
             <select id="priority" value={priorityFilter} onChange={event => setPriorityFilter(Number(event.target.value))}>
               <option value="0">No filter</option>
-              {[1, 2, 3].map(priority => (
+              {[1, 2, 3, 4, 5].map(priority => (
                 <option key={priority} value={priority}>{priority}</option>
               ))}
             </select>
