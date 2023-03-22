@@ -117,6 +117,9 @@
 .priorityFilter {
   margin-right: 1rem;
 }
+.categoryFilter {
+  margin-right: 1rem;
+}
 
 .sortOrder {
   display: flex;

@@ -10,7 +10,8 @@ const SearchToDoList = () => {
   const [assignedToFilter, setAssignedToFilter] = useState(0);
   const [sortOrder, setSortOrder] = useState('asc');
   const [sortField, setSortField] = useState('priority');
-  const [showCompletedTasks, setShowCompletedTasks] = useState(true);
+  const [showCompletedTasks, setShowCompletedTasks] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState(0);
 
   const { tasks, error, users, totalPages, currentPage, changePage } = useTasks(debouncedSearchTerm);
 
@@ -31,6 +32,10 @@ const SearchToDoList = () => {
 
     if (assignedToFilter > 0) {
       filteredTasks = filteredTasks.filter(task => task.assigned_to === assignedToFilter);
+    }
+
+    if (categoryFilter > 0) {
+      filteredTasks = filteredTasks.filter(task => task.category === categoryFilter);
     }
 
     return filteredTasks.sort((a, b) => {
@@ -102,6 +107,15 @@ const SearchToDoList = () => {
             <select id="sortOrder" value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
+            </select>
+          </div>
+          <div className={styles.filter}>
+            <label htmlFor="category">Category:</label>
+            <select id="category" value={categoryFilter} onChange={event => setCategoryFilter(Number(event.target.value))}>
+              <option value="0">No filter</option>
+              {Object.entries(CATEGORIES_DICT).map(([categoryId, categoryName]) => (
+                <option key={categoryId} value={categoryId}>{categoryName}</option>
+              ))}
             </select>
           </div>
           <div className={styles.filter}>
