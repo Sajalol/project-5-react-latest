@@ -18,6 +18,7 @@ const TodoList = () => {
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [categoryFilter, setCategoryFilter] = useState(-1);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
 
@@ -121,8 +122,14 @@ const TodoList = () => {
     ? completedTasks.filter(task => task.priority === priorityFilter)
     : completedTasks;
 
-  // apply sort order and field if set
-  const sortedFilteredTasks = filteredTasks.sort((a, b) => {
+  const filteredTasksByCategory = categoryFilter > -1
+    ? filteredTasks.filter(task => task.category === categoryFilter)
+    : filteredTasks;
+
+  // apply search term filter
+  const filteredTasksByTitle = filteredTasksByCategory
+  .filter(task => task.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  .sort((a, b) => {
     const sortOrderMultiplier = sortOrder === 'asc' ? 1 : -1;
 
     if (sortField === 'priority') {
@@ -133,11 +140,6 @@ const TodoList = () => {
 
     return 0;
   });
-
-  // apply search term filter
-  const filteredTasksByTitle = sortedFilteredTasks.filter(task =>
-    task.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div>
@@ -171,6 +173,20 @@ const TodoList = () => {
           <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
+          </select>
+        </div>
+        <div className={styles.categoryFilter}>
+          <label>Category filter:</label>
+          <select
+            value={categoryFilter}
+            onChange={event => setCategoryFilter(parseInt(event.target.value))}
+          >
+            <option value={-1}>No filter</option>
+            {Object.keys(CATEGORIES_DICT).map(categoryId => (
+              <option key={categoryId} value={parseInt(categoryId)}>
+                {CATEGORIES_DICT[categoryId]}
+              </option>
+            ))}
           </select>
         </div>
         <div className={styles.filter}>
