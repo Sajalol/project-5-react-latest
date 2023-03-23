@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useDebounce from '../../contexts/useDebounce';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
 import axios from 'axios';
 import styles from '../../styles/ToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
@@ -75,6 +77,38 @@ const TodoList = () => {
       console.error(error);
       setError('Could not update task');
     }
+  }, []);
+
+  const deleteTask = useCallback(async (taskId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#222635',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(
+            `https://rest-api-project5.herokuapp.com/todo/task-delete/${taskId}/`
+          );
+  
+          // Remove the deleted task from the tasks state
+          setTasks(tasks => tasks.filter(task => task.id !== taskId));
+  
+          Swal.fire(
+            'Deleted!',
+            'Your task has been deleted.',
+            'success'
+          );
+        } catch (error) {
+          console.error(error);
+          setError('Could not delete task');
+        }
+      }
+    });
   }, []);
 
   const currentUser = useCurrentUser();
@@ -263,6 +297,9 @@ const TodoList = () => {
                 </div>
               </div>
               <p className={styles.taskCompleted}><strong>Completed:</strong><br />{task.completed ? 'Yes' : 'No'}</p>
+              <button className={styles.taskDeleteButton} onClick={() => deleteTask(task.id)}>
+              Delete Task
+            </button>
             </li>
           ))
         ) : (

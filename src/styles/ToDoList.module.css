@@ -153,5 +153,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px auto; /* Add some margin at the top and bottom and center the element */
+  margin: 20px auto;
+}
+
+.taskDeleteButton {
+  /* add .Button class styles here */
+  font-size: 1.1rem;
+  align-self: center;
+  border-radius: 100px;
+  border-color: transparent;
+  padding: 4px 10px;
+  margin-left: 2px;
+  margin-right: 2px;
+  min-width: 75px;
+  line-height: 1.5;
+  /* end of .Button class styles */
+  background-color: #d9534f;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.taskDeleteButton:hover,
+.taskDeleteButton:focus {
+  background-color: #c9302c;
+  color: #ffffff;
+}
+
+.taskDeleteButton:active {
+  background-color: #ac2925;
+  color: #ffffff;
 }
