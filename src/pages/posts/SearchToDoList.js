@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import useDebounce from '../../contexts/useDebounce';
 import useTasks from '../../contexts/useTasks';
 import styles from '../../styles/SearchToDoList.module.css';
+import btnStyles from "../../styles/Button.module.css";
+
+import { CATEGORIES_DICT, useDownloadAttachment } from '../../hooks/hooks';
 
 const SearchToDoList = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,16 +15,9 @@ const SearchToDoList = () => {
   const [sortField, setSortField] = useState('priority');
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState(0);
+  const downloadAttachment = useDownloadAttachment();
 
   const { tasks, error, users, totalPages, currentPage, changePage } = useTasks(debouncedSearchTerm);
-
-  const CATEGORIES_DICT = {
-    0: 'Backend',
-    1: 'Frontend',
-    2: 'Database',
-    3: 'Python',
-    4: 'Javascript',
-  };
 
   const filterAndSortTasks = (taskList) => {
     let filteredTasks = showCompletedTasks ? taskList : taskList.filter(task => !task.completed);
@@ -166,6 +162,13 @@ const SearchToDoList = () => {
                         <a href={task.attachments} target="_blank" rel="noopener noreferrer">
                             View
                         </a>
+                        <br />
+                        <button
+                        onClick={() => downloadAttachment(task.attachments, getAttachmentNameFromUrl(task.attachments))}
+                        className={btnStyles.downloadButton}
+                      >
+                        Download
+                      </button>
                       </div>
                     ) : (
                       <p>No attachment</p>

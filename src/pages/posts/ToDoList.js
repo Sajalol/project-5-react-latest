@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import useDebounce from '../../contexts/useDebounce';
+import styles from '../../styles/ToDoList.module.css';
+import btnStyles from "../../styles/Button.module.css";
+import { useDownloadAttachment, CATEGORIES_DICT } from '../../hooks/hooks';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 import axios from 'axios';
-import styles from '../../styles/ToDoList.module.css';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 import { Select } from 'antd';
 const { Option } = Select;
@@ -21,16 +23,10 @@ const TodoList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState(-1);
+  const downloadAttachment = useDownloadAttachment();
+  
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
-
-  const CATEGORIES_DICT = {
-    0: 'Backend',
-    1: 'Frontend',
-    2: 'Database',
-    3: 'Python',
-    4: 'Javascript',
-  };
 
   const isTaskOverdue = (task) => {
     if (task.completed) {
@@ -45,7 +41,6 @@ const TodoList = () => {
   const changePage = useCallback((newPage) => {
     setCurrentPage(newPage);
   }, []);
-
 
 
   const updateTask = useCallback(async (taskId, completedPercentage) => {
@@ -275,6 +270,13 @@ const TodoList = () => {
                     <a href={task.attachments} target="_blank" rel="noopener noreferrer">
                       View
                     </a>
+                    <br />
+                    <button
+                    onClick={() => downloadAttachment(task.attachments, getAttachmentNameFromUrl(task.attachments))}
+                    className={btnStyles.downloadButton}
+                  >
+                    Download
+                  </button>
                   </div>
                 ) : (
                   <p>No attachment</p>
@@ -288,16 +290,16 @@ const TodoList = () => {
                     style={{ width: `${Math.max(task.completed_percentage, 5)}%` }}
                   />
                   <div className={styles.taskProgressValue}>{task.completed_percentage}%</div>
-                  <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage - 10)}>
+                  <button className={btnStyles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage - 10)}>
                     -10%
                   </button>
-                  <button className={styles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage + 10)}>
+                  <button className={btnStyles.taskProgressButton} onClick={() => updateTask(task.id, task.completed_percentage + 10)}>
                     +10%
                   </button>
                 </div>
               </div>
               <p className={styles.taskCompleted}><strong>Completed:</strong><br />{task.completed ? 'Yes' : 'No'}</p>
-              <button className={styles.taskDeleteButton} onClick={() => deleteTask(task.id)}>
+              <button className={btnStyles.taskDeleteButton} onClick={() => deleteTask(task.id)}>
               Delete Task
             </button>
             </li>
