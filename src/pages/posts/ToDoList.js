@@ -43,13 +43,13 @@ const TodoList = () => {
   }, []);
 
 
-  const updateTask = useCallback(async (taskId, completedPercentage) => {
+  const updateTask = useCallback(async (taskId, completedPercentage, category) => {
     try {
       completedPercentage = Math.max(0, Math.min(100, completedPercentage)); // Constrain completedPercentage to between 0 and 100
       const completed = completedPercentage === 100 ? true : false; // Set completed to true if completedPercentage is 100, otherwise false
       const response = await axios.put(
         `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
-        { completed_percentage: completedPercentage, completed: completed }
+        { completed_percentage: completedPercentage, completed: completed, category: category }
       );
 
       // Update the tasks state with the updated task
@@ -65,6 +65,20 @@ const TodoList = () => {
       const response = await axios.put(
         `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
         { assigned_to: assignedTo }
+      );
+      // Update the tasks state with the updated task
+      setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
+    } catch (error) {
+      console.error(error);
+      setError('Could not update task');
+    }
+  }, []);
+
+  const updatePriority = useCallback(async (taskId, priority) => {
+    try {
+      const response = await axios.put(
+        `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
+        { priority: priority }
       );
       // Update the tasks state with the updated task
       setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
@@ -105,6 +119,10 @@ const TodoList = () => {
       }
     });
   }, []);
+
+  const updateCategory = useCallback(async (taskId, category) => {
+    updateTask(taskId, null, category);
+  }, [updateTask]);
 
   const currentUser = useCurrentUser();
 
@@ -261,8 +279,30 @@ const TodoList = () => {
                   ))}
                 </Select>
               </div>
-              <p className={styles.taskCategory}><strong>Category:</strong><br />{CATEGORIES_DICT[task.category]}</p>
-              <p className={styles.taskPriority}><strong>Priority:</strong><br />{task.priority}</p>
+              <div className={styles.taskCategory}>
+              <label><strong>Category:</strong></label>
+              <Select
+                value={task.category}
+                onChange={newCategory => updateCategory(task.id, newCategory)}
+              >
+                {Object.keys(CATEGORIES_DICT).map(categoryId => (
+                  <Option key={categoryId} value={parseInt(categoryId)}>
+                    {CATEGORIES_DICT[categoryId]}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+              <div className={styles.taskPriority}>
+                <label><strong>Priority:</strong></label>
+                <Select
+                  value={task.priority}
+                  onChange={newPriority => updatePriority(task.id, newPriority)}
+                >
+                  {[1, 2, 3, 4, 5].map(value => (
+                    <Option key={value} value={value}>{value}</Option>
+                  ))}
+                </Select>
+              </div>
               <div className={styles.taskAttachment}> <p><strong>Attachments:<br /></strong></p>
                 {task.attachments ? (
                   <div className={styles.taskAttachment}>
