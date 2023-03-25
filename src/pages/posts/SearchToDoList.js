@@ -163,12 +163,12 @@ const SearchToDoList = () => {
                             View
                         </a>
                         <br />
-                        <button
-                        onClick={() => downloadAttachment(task.attachments, getAttachmentNameFromUrl(task.attachments))}
-                        className={btnStyles.downloadButton}
-                      >
-                        Download
-                      </button>
+                      <button
+                      onClick={() => downloadAttachment(task.attachments, getAttachmentNameFromUrl(task.attachments))}
+                      className={btnStyles.downloadButton}
+                    >
+                      Download
+                    </button>
                       </div>
                     ) : (
                       <p>No attachment</p>

@@ -25,7 +25,7 @@ const TodoList = () => {
   const [categoryFilter, setCategoryFilter] = useState(-1);
   const downloadAttachment = useDownloadAttachment();
   
-
+  
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
 
   const isTaskOverdue = (task) => {
