@@ -88,3 +88,27 @@
 
 ### If you try to type wrong link you will get "Page not found!" error
 
+<br>
+
+# Testing
+
+## CreateTask form test
+
+- The whole form needs to be filled out, except attachment and completed.
+- You will get a error message saying "Please fill out all the fields" when they are not filled out.
+- Tested with leaving one and one field out. Working as intended
+- You can test the form by seeing a new task in the Rest Api or in the search user task / my to do list 
+
+<br>
+
+## My To do list form test
+
+- Comparing all tasks to API and on the page
+- Testing search functions working as intended
+- Testing sort functions working as intended
+- Testing filtering working as intended
+- Fixed pagination only to 10 per page
+
+
+## Search user task 
+
