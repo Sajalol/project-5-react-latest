@@ -82,4 +82,9 @@
 - Set category between: Backend, Frontend, Python, Javascript and Database
 - Set priority between 1-5
 - Set progression between 0-100% if some of the task is already done
-- Mark the task as completed already
+- Mark the task as completed
+
+## Page not found
+
+### If you try to type wrong link you will get "Page not found!" error
+
