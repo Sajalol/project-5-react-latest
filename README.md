@@ -2,7 +2,31 @@
 
 ### A Task Manager application built with a Django REST API backend and a React frontend. The application allows users to create, view, update, and delete tasks, as well as view the details of individual tasks.
 
-<br></br>
+### This is another variant of Project example idea 3: productivity app. I changed this to a task manager app instead. 
+
+<br>
+
+## Table of Contents
+
+1. [Landing Page](#landing-page)
+2. [Navbar](#navbar)
+3. [Sign in page](#sign-in-page)
+4. [My to do list](#my-to-do-list)
+5. [Search User Tasks](#search-user-tasks)
+6. [Create Task](#create-task)
+7. [Page not found](#page-not-found)
+8. [Testing](#testing)
+9. [Bugs and optimizations](#bugs--optimizations)
+10. [Wireframes](#wireframes)
+11. [Deployment](#deployment)
+12. [Prerequisites](#prerequisites)
+13. [Installation and Setup](#installation-and-setup)
+14. [Technologies Used](#technologies-used)
+15. [Contributing](#contributing)
+16. [Deployed Project](#deployed-project) And usernames + passwords
+17. [Credits](#credits)
+
+<br>
 
 ## Landing Page
 
@@ -30,7 +54,7 @@
 
 ![Task Manager Signin](/src/assets/signin.PNG)
 
-### To sign in you will need a username and password given by an administrator. The username and password needs to be created in the API.
+### To sign in, you will need a username and password provided by an administrator. The username and password must be created in the API.
 
 <br>
 
@@ -70,7 +94,7 @@
 - Sort order Descending / Ascending
 - View and download attachments
 
-<br></br>
+<br>
 
 ## Create Task
 
@@ -140,7 +164,7 @@
 
 ## Testing on multiple devices
 
-- Testing the web page on different devices with no issues. The webpage is responsive from desktop, to small mobile phones and tablets. 
+- Tested the web page on different devices with no issues.. The webpage is responsive from desktop, to small mobile phones and tablets. 
 - Testing using the inspect in chrome, with devices options there. Devices are responsive and navbar + tasks etc works as intended. 
 
 <br>
@@ -149,7 +173,7 @@
 # Bugs / optimizations
 
 ## Current known bugs:
-- No known bugs
+- No known issues.
 
 ## Optimizations:
 - The pagination won't pull 10 tasks per page during search and filtering. They will stay on the page they originaly are on. This is for "my to do list" and "search user tasks"
@@ -211,3 +235,66 @@ This project is deployed using Heroku for both the Django backend and the React 
   },
 - Else the deployment will fail
 
+
+# Prerequisites
+
+Ensure that you have the following software installed on your local machine before proceeding:
+
+- Python 3.8 or higher
+- Node.js 14 or higher
+- npm 7 or higher
+- Git
+
+
+# Installation and Setup
+
+0. Set up the backend repository:
+
+- Before setting up the frontend, you need to have the backend API up and running. Follow the instructions in the [backend repository](https://github.com/Sajalol/rest_api_5) to clone, install dependencies, and start the backend server.
+
+Once the backend server is running, proceed to set up the frontend:
+
+1. Clone the repository:
+
+- git clone https://github.com/Sajalol/project-5-react-latest.git
+
+2. Install frontend dependencies:
+
+- npm install
+
+3. Start the server from the terminal
+
+- npm start
+
+4. The application should now be running at `http://localhost:3000`.
+
+- Remember you need to the API backend for this frontend to work!
+
+# Technologies Used
+
+- React
+- Redux
+- Axios
+- Bootstrap
+- Django
+- Django REST Framework
+- PostgreSQL
+
+
+# Deployed Project
+
+- Heroku Frontend deployed: https://project-5-react.herokuapp.com/ 
+- Heroku Backend deployed: https://rest-api-project5.herokuapp.com/
+- To be able to logg into the backend, add "admin" back of the link (https://rest-api-project5.herokuapp.com/admin)
+
+## Username and passwords to test the taskmanager with
+
+- User 1:  Username: User1   / Password: Project5Test
+- User 2:  Username: User2   / Password: Project5Test
+- User 3:  Username: User3   / Password: Project5Test
+
+# Credits
+
+* Code Institute for training.
+* Various articles and youtubers for ideas. 
+* Code Institute Slack and Tutoring assistance. 
