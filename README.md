@@ -204,14 +204,6 @@
 
 This project is deployed using Heroku for both the Django backend and the React frontend.
 
-## Backend Deployment
-
-1. Create a new Heroku app and provision a PostgreSQL add-on.
-2. Configure your Django app for Heroku by adding a `Procfile`, `requirements.txt`, and configuring the `ALLOWED_HOSTS` and `DATABASE_URL` settings.
-3. Commit your changes and push the project to a new GitHub repository.
-4. Connect your Heroku app to your GitHub repository and enable automatic deploys.
-5. Deploy your app by triggering a manual deploy or pushing new changes to your GitHub repository.
-
 ## Frontend Deployment
 
 1. Create a new Heroku app.
