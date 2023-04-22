@@ -28,6 +28,10 @@ const TodoList = () => {
   
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
 
+  const resetPageToFirst = useCallback(() => {
+    setCurrentPage(1);
+  }, []);
+
   const isTaskOverdue = (task) => {
     if (task.completed) {
       return false;
@@ -201,7 +205,13 @@ const TodoList = () => {
       <div className={styles.filtersContainer}>
         <div className={styles.priorityFilter}>
           <label>Priority filter:</label>
-          <select value={priorityFilter} onChange={event => setPriorityFilter(parseInt(event.target.value))}>
+              <select
+            value={priorityFilter}
+            onChange={event => {
+              setPriorityFilter(parseInt(event.target.value));
+              resetPageToFirst();
+            }}
+          >
             <option value={0}>No filter</option>
             {[1, 2, 3, 4, 5].map(value => (
               <option key={value} value={value}>{value}</option>
@@ -210,14 +220,26 @@ const TodoList = () => {
         </div>
         <div className={styles.sortOrder}>
           <label>Sort by:</label>
-          <select value={sortField} onChange={event => setSortField(event.target.value)}>
+          <select
+          value={sortField}
+          onChange={event => {
+            setSortField(event.target.value);
+            resetPageToFirst();
+          }}
+        >
             <option value="priority">Priority</option>
             <option value="due_date">Due date</option>
           </select>
         </div>
         <div className={styles.sortOrder}>
           <label>Sort:</label>
-          <select value={sortOrder} onChange={event => setSortOrder(event.target.value)}>
+          <select
+            value={sortOrder}
+            onChange={event => {
+              setSortOrder(event.target.value);
+              resetPageToFirst();
+            }}
+          >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
@@ -225,9 +247,12 @@ const TodoList = () => {
         <div className={styles.categoryFilter}>
           <label>Category filter:</label>
           <select
-            value={categoryFilter}
-            onChange={event => setCategoryFilter(parseInt(event.target.value))}
-          >
+              value={categoryFilter}
+              onChange={event => {
+                setCategoryFilter(parseInt(event.target.value));
+                resetPageToFirst();
+              }}
+            >
             <option value={-1}>No filter</option>
             {Object.keys(CATEGORIES_DICT).map(categoryId => (
               <option key={categoryId} value={parseInt(categoryId)}>
@@ -238,7 +263,15 @@ const TodoList = () => {
         </div>
         <div className={styles.filter}>
           <label htmlFor="showCompletedTasks">Show completed tasks:</label>
-          <input type="checkbox" id="showCompletedTasks" checked={showCompletedTasks} onChange={event => setShowCompletedTasks(event.target.checked)} />
+          <input
+              type="checkbox"
+              id="showCompletedTasks"
+              checked={showCompletedTasks}
+              onChange={event => {
+                setShowCompletedTasks(event.target.checked);
+                resetPageToFirst();
+              }}
+            />
         </div>
       </div>
       <p>Total tasks: {filteredTasksByTitle.length}</p>
