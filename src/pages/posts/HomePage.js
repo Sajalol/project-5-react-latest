@@ -13,6 +13,7 @@ function Home() {
       <div className={styles.imageContainer}>
         <img src={todolistImage} alt="todolistImage" className={styles.image} />
       </div>
+        <p className={styles.text}>This taskmanager is restricted to example-company users only</p>
     </div>
   );
 }

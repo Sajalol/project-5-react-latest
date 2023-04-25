@@ -24,7 +24,8 @@
 14. [Technologies Used](#technologies-used)
 15. [Contributing](#contributing)
 16. [Deployed Project](#deployed-project) And usernames + passwords
-17. [Credits](#credits)
+17. [Agile](#agile-process)
+18. [Credits](#credits)
 
 <br>
 
@@ -37,7 +38,7 @@
 
 ## Navbar
 
-### The navbar is easy to navigate, and features all three pages and the sign up, sign in and logout if you're logged in. And the navbar is full responsive. The navbar is alike on all the pages.
+### The navbar is easy to navigate, and features all three pages and the sign up, sign in and logout if you're logged in. And the navbar is fully responsive. The navbar is alike on all the pages.
 
 ### After you sign in, your navbar will look like this. 
 
@@ -227,6 +228,7 @@ This project is deployed using Heroku for both the Django backend and the React 
   },
 - Else the deployment will fail
 
+<br>
 
 # Prerequisites
 
@@ -237,6 +239,7 @@ Ensure that you have the following software installed on your local machine befo
 - npm 7 or higher
 - Git
 
+<br>
 
 # Installation and Setup
 
@@ -262,6 +265,8 @@ Once the backend server is running, proceed to set up the frontend:
 
 - Remember you need to the API backend for this frontend to work!
 
+<br>
+
 # Technologies Used
 
 - React
@@ -272,18 +277,131 @@ Once the backend server is running, proceed to set up the frontend:
 - Django REST Framework
 - PostgreSQL
 
+<br>
 
 # Deployed Project
 
 - Heroku Frontend deployed: https://project-5-react.herokuapp.com/ 
 - Heroku Backend deployed: https://rest-api-project5.herokuapp.com/
-- To be able to logg into the backend, add "admin" back of the link (https://rest-api-project5.herokuapp.com/admin)
+- To be able to log into the backend, add "admin" back of the link (https://rest-api-project5.herokuapp.com/admin)
 
-## Username and passwords to test the taskmanager with
+<br>
+
+# Username and passwords to test the taskmanager with
 
 - User 1:  Username: User1   / Password: Project5Test
 - User 2:  Username: User2   / Password: Project5Test
 - User 3:  Username: User3   / Password: Project5Test
+
+<br>
+
+# Agile Process
+
+1. User Stories and Epics
+We maintain a list of user stories and epics in this README file. Each user story includes a clear description and acceptance criteria. User stories are grouped under their corresponding epics.
+
+2. Prioritization
+User stories are prioritized based on their importance and complexity. High-priority user stories are listed at the top of each epic section.
+
+3. Progress Tracking
+
+- To track the progress of user stories, we use the following status labels:
+
+[ ] To Do
+[ ] In Progress
+[ ] In Review
+[ ] Done
+- Update the status of a user story by checking or unchecking the corresponding checkbox.
+
+## User Stories and Epics
+
+## Epic 1: User Authentication
+
+### User Story 1.1: As a user, I want to register for an account
+
+- [x] Done
+* Acceptance Criteria:
+- Users can provide their email, username, and password to create an account
+
+### User Story 1.2: As a user, I want to log in to my account
+
+- [x] Done
+* Acceptance Criteria:
+- Users can log in using their email/username and password
+- Users are redirected to the dashboard after successful login
+
+## Epic 2: Task Management
+
+### User Story 2.1: As a user, I want to create a task
+
+- [x] Done
+* Acceptance Criteria:
+- Users can provide a title, description, due date, category, priority, and assignee to create a task
+- Users can attach files to the task
+
+### User Story 2.2: As a user, I want to view my tasks
+
+- [x] Done
+* Acceptance Criteria:
+- Users can view a list of their tasks
+- Users can filter and sort tasks by different criteria
+
+### User Story 2.3: As a user, I want to update my tasks
+
+- [x] Done
+* Acceptance Criteria:
+- Users can update the category, priority, assignee, and progress of a task
+- Users can mark a task as completed
+
+### User Story 2.4: As a user, I want to delete my tasks
+
+- [x] Done
+* Acceptance Criteria:
+- Users can delete a task from their task list
+
+## Epic 3: User Interface
+
+### User Story 3.1: As a user, I want a visually appealing sign-in form
+
+- [x] To Do
+* Acceptance Criteria:
+  - The sign-in form is well-designed and easy to use
+  - Users can easily input their username and password to sign in
+
+### User Story 3.2: As a user, I want clear error messages when sign-in fails
+
+- [x] To Do
+* Acceptance Criteria:
+  - Users are shown a clear error message when they enter incorrect credentials
+  - Error messages are styled consistently with the rest of the application
+
+## Epic 4: Task Searching
+
+### User Story 4.1: As a user, I want to search tasks by user
+
+- [x] To Do
+* Acceptance Criteria:
+  - Users can search tasks by entering another user's username
+  - Users can view a list of tasks assigned to the specified user
+
+## Epic 5: Navigation
+
+### User Story 5.1: As a user, I want an intuitive navigation menu
+
+- [x] To Do
+* Acceptance Criteria:
+  - Users can easily navigate through the application using the navigation menu
+  - The navigation menu adapts to display relevant options based on whether the user is logged in or not
+
+## Epic 6: Form Validation and Error Handling
+
+### User Story 6.1: As a user, I want to receive an error message when trying to create a task without filling out all required fields
+
+- [x] To Do
+* Acceptance Criteria:
+  - Users receive a clear error message when they attempt to create a task without filling out all required fields
+  - The error message is styled consistently with the rest of the application
+
 
 # Credits
 
