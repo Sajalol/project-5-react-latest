@@ -11,6 +11,7 @@ import { Select } from 'antd';
 const { Option } = Select;
 
 
+
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
@@ -21,9 +22,11 @@ const TodoList = () => {
   const [sortField, setSortField] = useState('priority'); // default to sorting by priority
   const [showCompletedTasks, setShowCompletedTasks] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line
   const [totalPages, setTotalPages] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState(-1);
   const downloadAttachment = useDownloadAttachment();
+  const [allTasksFetched, setAllTasksFetched] = useState(false);
   
   
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
@@ -42,9 +45,38 @@ const TodoList = () => {
     return taskDueDate < today;
   };
 
+  // eslint-disable-next-line
   const changePage = useCallback((newPage) => {
     setCurrentPage(newPage);
   }, []);
+
+  const fetchAllTasks = async () => {
+    let currentPage = 1;
+    let allTasks = [];
+    setAllTasksFetched(false);
+  
+    while (true) {
+      try {
+        const response = await axios.get(
+          `https://rest-api-project5.herokuapp.com/todo/task-list/?assigned_to=${currentUser.pk}&page=${currentPage}&search=${debouncedSearchTerm}`
+        );
+        allTasks = [...allTasks, ...response.data.results];
+  
+        if (response.data.next) {
+          currentPage += 1;
+        } else {
+          break;
+        }
+      } catch (error) {
+        console.error(error);
+        setError('Could not fetch tasks');
+        break;
+      }
+    }
+    setTasks(allTasks);
+    setAllTasksFetched(true);
+  };
+  
 
 
   const updateTask = useCallback(async (taskId, completedPercentage, category) => {
@@ -157,6 +189,13 @@ const TodoList = () => {
       getTasks();
     }
   }, [currentUser, currentPage, debouncedSearchTerm]);
+
+  useEffect(() => {
+    if (currentUser && allTasksFetched === false) {
+      fetchAllTasks();
+    }
+    // eslint-disable-next-line
+  }, [currentUser, debouncedSearchTerm, priorityFilter, categoryFilter, showCompletedTasks]);
 
   if (error) return <p>{error}</p>;
 
@@ -275,15 +314,6 @@ const TodoList = () => {
         </div>
       </div>
       <p>Total tasks: {filteredTasksByTitle.length}</p>
-      <div className={styles.paginationControls}>
-        <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
       <ul className={styles.taskList}>
         {filteredTasksByTitle.length > 0 ? (
           filteredTasksByTitle.map(task => (
@@ -381,16 +411,7 @@ const TodoList = () => {
           <p>No tasks to show</p>
         )}
       </ul>
-      <div className={styles.paginationControls}>
-        <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
-          Next
-        </button>
       </div>
-    </div>
   );
 };
 
