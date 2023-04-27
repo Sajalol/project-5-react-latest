@@ -21,27 +21,27 @@ const SearchToDoList = () => {
 
   const filterAndSortTasks = (taskList) => {
     let filteredTasks = showCompletedTasks ? taskList : taskList.filter(task => !task.completed);
-
+  
     if (priorityFilter > 0) {
       filteredTasks = filteredTasks.filter(task => task.priority === priorityFilter);
     }
-
+  
     if (assignedToFilter > 0) {
       filteredTasks = filteredTasks.filter(task => task.assigned_to === assignedToFilter);
     }
-
+  
     if (categoryFilter > 0) {
       filteredTasks = filteredTasks.filter(task => task.category === categoryFilter);
     }
-
-    return filteredTasks.sort((a, b) => {
+  
+    const sortedTasks = filteredTasks.sort((a, b) => {
       const fieldToSortBy = sortField === 'category'
         ? task => CATEGORIES_DICT[task.category]
         : task => task[sortField];
-
+  
       const valA = fieldToSortBy(a);
       const valB = fieldToSortBy(b);
-
+  
       if (valA > valB) {
         return sortOrder === 'asc' ? 1 : -1;
       } else if (valB > valA) {
@@ -50,7 +50,24 @@ const SearchToDoList = () => {
         return 0;
       }
     });
+  
+    return sortedTasks.map(task => ({
+      ...task,
+      is_overdue: isTaskOverdue(task),
+    }));
   };
+  
+
+  const isTaskOverdue = (task) => {
+    if (task.completed) {
+      return false;
+    }
+  
+    const today = new Date();
+    const taskDueDate = new Date(task.due_date);
+    return taskDueDate < today;
+  };
+  
 
   const getAttachmentNameFromUrl = (url) => {
     if (!url) return null;

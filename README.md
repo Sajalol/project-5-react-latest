@@ -175,13 +175,11 @@
 
 ## My to do list
 
-- Removed pagination from my to do list as sorting category and priority didnt work optimally. This way it works better
-- As its only your own tasks, performance wont be affected much.
+- Pagination set to 100 tasks per page.
 
 ## Search user task
 
-- Pagination is set to 10 tasks per page.
-- When sorting by category / priority, the tasks are stuck on their original page, instead of getting moved to earlier pages / page 1.
+- Pagination is set to 100 tasks per page.
 
 
 # Bugs / optimizations
@@ -190,7 +188,6 @@
 - No known issues.
 
 ## Optimizations:
-- When sorting by category / priority in search user tasks. The tasks are stuck on their original page, instead of getting moved to earlier pages / page 1.
 - Can move more hooks to own files
 
 <br>
