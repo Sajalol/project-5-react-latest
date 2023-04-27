@@ -8,6 +8,8 @@ import 'sweetalert2/dist/sweetalert2.css';
 import axios from 'axios';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 import { Select } from 'antd';
+import DatePicker from 'antd/lib/date-picker';
+import moment from 'moment';
 const { Option } = Select;
 
 
@@ -24,6 +26,7 @@ const TodoList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [categoryFilter, setCategoryFilter] = useState(-1);
   const downloadAttachment = useDownloadAttachment();
+  const [dueDate, setDueDate] = useState('');
   
   
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
@@ -45,6 +48,7 @@ const TodoList = () => {
   const changePage = useCallback((newPage) => {
     setCurrentPage(newPage);
   }, []);
+  
 
 
   const updateTask = useCallback(async (taskId, completedPercentage, category) => {
@@ -127,6 +131,26 @@ const TodoList = () => {
   const updateCategory = useCallback(async (taskId, category) => {
     updateTask(taskId, null, category);
   }, [updateTask]);
+
+  const updateDueDate = useCallback(async (taskId, dueDate) => {
+    try {
+      const response = await axios.put(
+        `https://rest-api-project5.herokuapp.com/todo/task-update/${taskId}/`,
+        { due_date: dueDate }
+      );
+      // Update the tasks state with the updated task
+      setTasks(tasks => tasks.map(task => task.id === taskId ? response.data : task));
+    } catch (error) {
+      console.error(error);
+      setError('Could not update task');
+    }
+  }, []);
+
+  const onDueDateChange = (taskId, date, dateString) => {
+    setDueDate(dateString);
+    updateDueDate(taskId, dateString);
+  };
+  
 
   const currentUser = useCurrentUser();
 
@@ -301,6 +325,16 @@ const TodoList = () => {
               {isTaskOverdue(task) && (
                 <p className={styles.overdueText}>Task is overdue!</p>
               )}
+              <label>Change Due Date:</label>
+              <DatePicker
+                  onChange={(date, dateString) => onDueDateChange(task.id, date, dateString)}
+                  disabledDate={(current) => {
+                    return current && current < moment().startOf('day');
+                  }}
+                  required
+                />
+
+
               <div className={styles.taskAssignedTo}>
                 <label><strong>Assigned to:</strong></label>
                 <Select
