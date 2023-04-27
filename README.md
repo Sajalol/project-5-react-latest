@@ -16,16 +16,17 @@
 6. [Create Task](#create-task)
 7. [Page not found](#page-not-found)
 8. [Testing](#testing)
-9. [Bugs and optimizations](#bugs--optimizations)
-10. [Wireframes](#wireframes)
-11. [Deployment](#deployment)
-12. [Prerequisites](#prerequisites)
-13. [Installation and Setup](#installation-and-setup)
-14. [Technologies Used](#technologies-used)
-15. [Contributing](#contributing)
-16. [Deployed Project](#deployed-project) And usernames + passwords
-17. [Agile](#agile-process)
-18. [Credits](#credits)
+9. [Pagination](#pagination)
+10. [Bugs and optimizations](#bugs--optimizations)
+11. [Wireframes](#wireframes)
+12. [Deployment](#deployment)
+13. [Prerequisites](#prerequisites)
+14. [Installation and Setup](#installation-and-setup)
+15. [Technologies Used](#technologies-used)
+16. [Contributing](#contributing)
+17. [Deployed Project](#deployed-project) And usernames + passwords
+18. [Agile](#agile-process)
+19. [Credits](#credits)
 
 <br>
 
@@ -170,6 +171,18 @@
 
 <br>
 
+# Pagination
+
+## My to do list
+
+- Removed pagination from my to do list as sorting category and priority didnt work optimally. This way it works better
+- As its only your own tasks, performance wont be affected much.
+
+## Search user task
+
+- Pagination is set to 10 tasks per page.
+- When sorting by category / priority, the tasks are stuck on their original page, instead of getting moved to earlier pages / page 1.
+
 
 # Bugs / optimizations
 
@@ -177,7 +190,7 @@
 - No known issues.
 
 ## Optimizations:
-- The pagination won't pull 10 tasks per page during search and filtering. They will stay on the page they originaly are on. This is for "my to do list" and "search user tasks"
+- When sorting by category / priority in search user tasks. The tasks are stuck on their original page, instead of getting moved to earlier pages / page 1.
 - Can move more hooks to own files
 
 <br>

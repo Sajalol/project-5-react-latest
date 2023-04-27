@@ -135,7 +135,7 @@ const SearchToDoList = () => {
               <th>Title</th>
               <th>Description</th>
               <th>Priority</th>
-              <th>Due Date</th>
+              <th className={`${styles.dueDate} ${styles.dueDateHeader}`}>Due Date</th>
               <th>Category</th>
               <th>Assigned To</th>
               <th>Attachments</th>
@@ -152,7 +152,7 @@ const SearchToDoList = () => {
                     <td className={styles.title}>{task.title}</td>
                     <td className={styles.content}>{task.content}</td>
                     <td className={styles.priority}>{task.priority}</td>
-                    <td className={styles.dueDate}>{task.due_date}</td>
+                    <td className={`${styles.dueDate} ${task.is_overdue ? styles.overdue : ''}`}>{task.due_date}</td>
                     <td className={styles.category}>{CATEGORIES_DICT[task.category]}</td>
                     <td className={styles.assignedTo}>{users[task.assigned_to]?.username || 'Unassigned'}</td>
                     <td className={styles.taskAttachment}>

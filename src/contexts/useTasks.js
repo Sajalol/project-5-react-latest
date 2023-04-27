@@ -30,7 +30,7 @@ const useTasks = (searchTerm) => {
           const url = `https://rest-api-project5.herokuapp.com/todo/task-list/?search=${searchTerm}&page=${currentPage}`;
           const res = await axios.get(url);
           const results = res.data.results;
-          setTotalPages(Math.ceil(res.data.count / 10));
+          setTotalPages(Math.ceil(res.data.count / 100));
           setTasks(results);
         } catch (error) {
           setError('Could not fetch tasks');
