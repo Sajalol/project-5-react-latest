@@ -6,8 +6,19 @@
 
 <br>
 
+# Introduction
+
+### Welcome to the React Task Manager, a comprehensive productivity tool designed to help you stay organized and manage your tasks efficiently. Whether you're working on personal projects or collaborating with a team, this task manager application has got you covered. With an intuitive user interface and powerful features, you can easily create, view, update, and delete tasks, while also having the ability to search and filter tasks based on various criteria.
+
+### Built using the Django REST API for the backend and React for the frontend, this application leverages the latest web development technologies to provide a seamless user experience. It also incorporates responsive design to ensure optimal performance across a wide range of devices.
+
+### In this documentation, you'll find detailed information on the application's features, installation and setup instructions, and a comprehensive guide on how to deploy the project. So, dive in and explore the React Task Manager to enhance your productivity and make task management a breeze!
+
+<br>
+
 ## Table of Contents
 
+0. [Introduction](#introduction)
 1. [Landing Page](#landing-page)
 2. [Navbar](#navbar)
 3. [Sign in page](#sign-in-page)
@@ -373,14 +384,14 @@ User stories are prioritized based on their importance and complexity. High-prio
 
 ### User Story 3.1: As a user, I want a visually appealing sign-in form
 
-- [x] To Do
+- [x] Done
 * Acceptance Criteria:
   - The sign-in form is well-designed and easy to use
   - Users can easily input their username and password to sign in
 
 ### User Story 3.2: As a user, I want clear error messages when sign-in fails
 
-- [x] To Do
+- [x] Done
 * Acceptance Criteria:
   - Users are shown a clear error message when they enter incorrect credentials
   - Error messages are styled consistently with the rest of the application
@@ -389,7 +400,7 @@ User stories are prioritized based on their importance and complexity. High-prio
 
 ### User Story 4.1: As a user, I want to search tasks by user
 
-- [x] To Do
+- [x] Done
 * Acceptance Criteria:
   - Users can search tasks by entering another user's username
   - Users can view a list of tasks assigned to the specified user
@@ -398,7 +409,7 @@ User stories are prioritized based on their importance and complexity. High-prio
 
 ### User Story 5.1: As a user, I want an intuitive navigation menu
 
-- [x] To Do
+- [x] Done
 * Acceptance Criteria:
   - Users can easily navigate through the application using the navigation menu
   - The navigation menu adapts to display relevant options based on whether the user is logged in or not
@@ -407,7 +418,7 @@ User stories are prioritized based on their importance and complexity. High-prio
 
 ### User Story 6.1: As a user, I want to receive an error message when trying to create a task without filling out all required fields
 
-- [x] To Do
+- [x] Done
 * Acceptance Criteria:
   - Users receive a clear error message when they attempt to create a task without filling out all required fields
   - The error message is styled consistently with the rest of the application
