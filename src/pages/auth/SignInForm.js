@@ -27,15 +27,19 @@ function SignInForm() {
   const history = useHistory();
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const { data } = await axios.post("/dj-rest-auth/login/", signInData);
+      // Store the token in localStorage or any other preferred storage
+      localStorage.setItem("authToken", data.key);
+  
       setCurrentUser(data.user);
       history.push("/");
     } catch (err) {
       setErrors(err.response?.data);
     }
   };
+  
 
   const handleChange = (event) => {
     setSignInData({
