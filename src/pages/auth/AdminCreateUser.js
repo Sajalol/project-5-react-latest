@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '../../styles/AdminCreateUser.module.css';
 import axios from 'axios';
 
 const AdminCreateUser = () => {
@@ -25,21 +26,27 @@ const AdminCreateUser = () => {
   
 
   return (
-    <div>
-      <h1>Create a new user</h1>
-      <label htmlFor="username">Username</label>
-      <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <label htmlFor="email">Email</label>
-      <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <label htmlFor="password">Password</label>
-      <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <label htmlFor="firstName">First Name</label>
-      <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-      <label htmlFor="lastName">Last Name</label>
-      <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-      <button onClick={createUser}>Create User</button>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Create a new user</h1>
+      
+      <label htmlFor="username" className={styles.label}>Username</label>
+      <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} className={styles.input} />
+      
+      <label htmlFor="email" className={styles.label}>Email</label>
+      <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input} />
+      
+      <label htmlFor="firstName" className={styles.label}>First Name</label>
+      <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={styles.input} />
+      
+      <label htmlFor="lastName" className={styles.label}>Last Name</label>
+      <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} className={styles.input} />
+
+      <label htmlFor="password" className={styles.label}>Password</label>
+      <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input} />
+      
+      <button onClick={createUser} className={styles.button}>Create User</button>
     </div>
-  );
+  );  
 };
 
 export default AdminCreateUser;
