@@ -45,13 +45,15 @@ const NavBar = () => {
       >
         <i className="fa-solid fa-plus"></i>Create task
       </NavLink>
+      <NavLink
+          className={styles.NavLink}
+          activeClassName={styles.Active}
+          to="/admin/create-user"
+        >
+          <i className="fa-solid fa-user-plus"></i>Create User
+        </NavLink>
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
-      </NavLink>
-      <NavLink
-        className={styles.NavLink}
-        to={`/profiles/${currentUser?.profile_id}`}
-      >
       </NavLink>
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from "sweetalert2";
 import styles from '../../styles/AdminCreateUser.module.css';
 import axios from 'axios';
 
@@ -9,7 +10,38 @@ const AdminCreateUser = () => {
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
 
+  const validatePassword = (password) => {
+    // At least 8 characters long
+    const minLength = 8;
+    // At least one uppercase letter
+    const hasUppercase = /[A-Z]/.test(password);
+    // At least one lowercase letter
+    const hasLowercase = /[a-z]/.test(password);
+    // At least one digit
+    const hasDigit = /\d/.test(password);
+    // At least one special character
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  
+    return (
+      password.length >= minLength &&
+      hasUppercase &&
+      hasLowercase &&
+      hasDigit &&
+      hasSpecialChar
+    );
+  };
+
   const createUser = async () => {
+    if (!validatePassword(password)) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Password does not meet the requirements. It should be at least 8 characters long, have at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
     try {
       const response = await axios.post('https://rest-api-project5.herokuapp.com/todo/users/create/', {
         username,
@@ -19,10 +51,42 @@ const AdminCreateUser = () => {
         last_name: lastName
       });
       console.log(response.data);
+      // Display success message
+      Swal.fire({
+        title: 'User created successfully!',
+        icon: 'success',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+  
+      // Clear the form fields
+      setEmail('');
+      setPassword('');
+      setFirstName('');
+      setLastName('');
+      setUsername('');
     } catch (error) {
       console.error(error);
+      const errorDetails = error.response.data;
+  
+      // Generate a string containing all error messages
+      let errorMessage = '';
+      for (const key in errorDetails) {
+        errorMessage += `${key}: ${errorDetails[key].join(', ')}\n`;
+      }
+  
+      // Display error message
+      Swal.fire({
+        title: 'Error!',
+        text: `An error occurred while creating the user. Details:\n${errorMessage}`,
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
     }
   };
+  
+  
   
 
   return (
