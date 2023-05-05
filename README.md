@@ -25,19 +25,20 @@
 4. [My to do list](#my-to-do-list)
 5. [Search User Tasks](#search-user-tasks)
 6. [Create Task](#create-task)
-7. [Page not found](#page-not-found)
-8. [Testing](#testing)
-9. [Pagination](#pagination)
-10. [Bugs and optimizations](#bugs--optimizations)
-11. [Wireframes](#wireframes)
-12. [Deployment](#deployment)
-13. [Prerequisites](#prerequisites)
-14. [Installation and Setup](#installation-and-setup)
-15. [Technologies Used](#technologies-used)
-16. [Contributing](#contributing)
-17. [Deployed Project](#deployed-project) And usernames + passwords
-18. [Agile](#agile-process)
-19. [Credits](#credits)
+7. [Create User](#create-user)
+8. [Page not found](#page-not-found)
+9. [Testing](#testing)
+10. [Pagination](#pagination)
+11. [Bugs and optimizations](#bugs--optimizations)
+12. [Wireframes](#wireframes)
+13. [Deployment](#deployment)
+14. [Prerequisites](#prerequisites)
+15. [Installation and Setup](#installation-and-setup)
+16. [Technologies Used](#technologies-used)
+17. [Contributing](#contributing)
+18. [Deployed Project](#deployed-project) And usernames + passwords
+19. [Agile](#agile-process)
+20. [Credits](#credits)
 
 <br>
 
@@ -54,12 +55,13 @@
 
 ### After you sign in, your navbar will look like this. 
 
-![Task Manager Navbar](/src/assets/navbar.PNG)
+![Task Manager Navbar](/src/assets/navbar_1.PNG)
 
 - My To Do List will take you to your to do list. 
 - Search User Tasks will take you to a list of all the tasks on all the available users.
 - Create Task will take you to the page where you create tasks
 - Sign in / Sign out will either sign you out or send you to the login page
+- Create users
 
 <br>
 
@@ -125,11 +127,26 @@
 - Set progression between 0-100% if some of the task is already done
 - Mark the task as completed
 
+
+## Create User
+
+![Task Manager CreateTask](/src/assets/Create_user.PNG)
+
+### This page is where you create users. Only Admins are able to create users. Normal users will get a error message
+- All fields needs to be filled out
+- Password requirement
+- Error / Success messages
+- Only admin users can create users, normal users will get error message
+- Checking email format is correct
+
+<br>
+
 ## Page not found
 
 ### If you try to type wrong link you will get "Page not found!" error
 
 <br>
+
 
 # Testing
 
@@ -213,14 +230,20 @@
 
 ![Task manager myodolist](/src/assets/mytodolist.wire.PNG)
 
+<br>
+
 ## Search to do list
 
 ![Task manager searchtodolist](/src/assets/searchtodolist.wire.PNG)
+
+<br>
+
 
 ## Create task
 
 ![Task manager Createtask](/src/assets/createtask.wire.PNG)
 
+<br>
 
 # Deployment
 
@@ -423,6 +446,51 @@ User stories are prioritized based on their importance and complexity. High-prio
   - Users receive a clear error message when they attempt to create a task without filling out all required fields
   - The error message is styled consistently with the rest of the application
 
+## Epic 7: Creating users in the frontend
+
+### User Story 7.1: As an admin, I want to create new users within the application
+
+- [X] Done
+* Acceptance Criteria:
+  - Admin users can create new users by providing a username, email, and password
+  - The new user is saved in the API
+  - Admin users receive success messages upon successful user creation
+  - Password requirement. It should be at least 8 characters long, have at least one uppercase letter, one lowercase letter, one digit, and one special character.
+  - Error messages are displayed if user creation fails (e.g., due to invalid email format or insufficient privileges)
+  - All fields are required
+
+### User Story 7.2: As a non-admin user, I should not be able to create new users
+- [X] Done
+* Acceptance Criteria:
+  - Non-admin users receive an error message when attempting to create a new user
+  - The error message is styled consistently with the rest of the application
+
+## Epic 8: Documentation
+  
+### User Story 8.1: As a developer or user, I want clear documentation on how to install, set up, and use the application
+- [X] Done
+* Acceptance Criteria:
+  - The documentation provides clear instructions on how to install and set up the application
+  - The documentation provides an overview of the application's features and usage
+  - The documentation is well-organized and easy to follow
+
+### User Story 8.2: As a developer, I want documentation on how to deploy the application
+- [X] Done
+* Acceptance Criteria:
+  - The documentation provides clear instructions on how to deploy the application to a production environment
+  - The documentation includes information on necessary prerequisites and environment variables
+  - The documentation provides troubleshooting tips and common issues encountered during deployment
+
+## Epic 9: Responsiveness and Cross-Device Compatibility
+
+### User Story 9.1: As a user, I want the application to be responsive and compatible with various devices and screen sizes
+- [X] Done
+* Acceptance Criteria:
+  - The application is responsive and adapts its layout to various screen sizes
+  - The application is tested and functional on multiple devices, including desktop computers, tablets, and mobile phones
+  - The application's user interface remains visually appealing and easy to use across different devices and screen sizes
+
+<br>
 
 # Credits
 

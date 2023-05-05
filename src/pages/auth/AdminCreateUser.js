@@ -31,7 +31,22 @@ const AdminCreateUser = () => {
     );
   };
 
+  const validateForm = () => {
+    return email && password && firstName && lastName && username;
+  };
+
   const createUser = async () => {
+    if (!validateForm()) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'All fields are required.',
+        icon: 'error',
+        confirmButtonColor: '#222635',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+  
     if (!validatePassword(password)) {
       Swal.fire({
         title: 'Error!',
@@ -69,13 +84,15 @@ const AdminCreateUser = () => {
       console.error(error);
       const errorDetails = error.response.data;
   
-      // Generate a string containing all error messages
       let errorMessage = '';
-      for (const key in errorDetails) {
-        errorMessage += `${key}: ${errorDetails[key].join(', ')}\n`;
+      if (error.response.status === 403) {
+        errorMessage = 'You do not have permission to create a user.';
+      } else {
+        for (const key in errorDetails) {
+          errorMessage += `${key}: ${errorDetails[key].join(', ')}\n`;
+        }
       }
   
-      // Display error message
       Swal.fire({
         title: 'Error!',
         text: `An error occurred while creating the user. Details:\n${errorMessage}`,
@@ -85,6 +102,7 @@ const AdminCreateUser = () => {
       });
     }
   };
+  
   
   
   
