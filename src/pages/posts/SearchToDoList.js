@@ -6,6 +6,8 @@ import btnStyles from "../../styles/Button.module.css";
 
 import { CATEGORIES_DICT, useDownloadAttachment } from '../../hooks/hooks';
 
+
+// SearchToDoList component: Allows users to search, filter, and sort a list of tasks for all users
 const SearchToDoList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -17,8 +19,12 @@ const SearchToDoList = () => {
   const [categoryFilter, setCategoryFilter] = useState(0);
   const downloadAttachment = useDownloadAttachment();
 
+
+  // Hooks to fetch tasks, error, users, totalPages, and currentPage
   const { tasks, error, users, totalPages, currentPage, changePage } = useTasks(debouncedSearchTerm);
 
+
+  // Function to filter and sort tasks based on user-selected criteria
   const filterAndSortTasks = (taskList) => {
     let filteredTasks = showCompletedTasks ? taskList : taskList.filter(task => !task.completed);
   
@@ -57,7 +63,7 @@ const SearchToDoList = () => {
     }));
   };
   
-
+  // Function to check if a task is overdue
   const isTaskOverdue = (task) => {
     if (task.completed) {
       return false;
@@ -68,15 +74,17 @@ const SearchToDoList = () => {
     return taskDueDate < today;
   };
   
-
+  // Function to get the attachment name from the URL
   const getAttachmentNameFromUrl = (url) => {
     if (!url) return null;
     const urlParts = url.split('/');
     return urlParts[urlParts.length - 1];
   };
 
+  // Get sorted tasks based on filter and sort criteria
   const sortedTasks = filterAndSortTasks(tasks);
 
+  // Return error message if there's an error fetching tasks
   if (error) return <p>{error}</p>;
 
     return (

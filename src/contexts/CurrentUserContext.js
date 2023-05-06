@@ -13,6 +13,7 @@ export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const history = useHistory();
 
+  // Function to fetch user data and set the current user state
   const handleMount = async () => {
     try {
       const { data } = await axiosRes.get("dj-rest-auth/user/");
@@ -26,6 +27,7 @@ export const CurrentUserProvider = ({ children }) => {
     handleMount();
   }, []);
 
+  // Configure axios interceptors for handling token refresh and redirecting to sign-in page
   useMemo(() => {
     axiosReq.interceptors.request.use(
       async (config) => {
@@ -68,6 +70,7 @@ export const CurrentUserProvider = ({ children }) => {
     );
   }, [history]);
 
+  // Provide the current user state and the state updater function to children components
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <SetCurrentUserContext.Provider value={setCurrentUser}>

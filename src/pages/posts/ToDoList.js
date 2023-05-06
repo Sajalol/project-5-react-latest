@@ -29,13 +29,15 @@ const TodoList = () => {
   // eslint-disable-next-line
   const [dueDate, setDueDate] = useState('');
   
-  
+  // Add a 300ms delay in search
   const debouncedSearchTerm = useDebounce(searchTerm, 300); // Add a 300ms delay in search
 
+  // Reset the current page to the first page
   const resetPageToFirst = useCallback(() => {
     setCurrentPage(1);
   }, []);
 
+  // Determine if a task is overdue
   const isTaskOverdue = (task) => {
     if (task.completed) {
       return false;
@@ -46,11 +48,13 @@ const TodoList = () => {
     return taskDueDate < today;
   };
 
+  // Change the current page
   const changePage = useCallback((newPage) => {
     setCurrentPage(newPage);
   }, []);
   
 
+// Update tasks
 
   const updateTask = useCallback(async (taskId, completedPercentage, category) => {
     try {
@@ -69,6 +73,7 @@ const TodoList = () => {
     }
   }, []);
 
+  // Update the assignedTo field of a task
   const updateAssignedTo = useCallback(async (taskId, assignedTo) => {
     try {
       const response = await axios.put(
@@ -83,6 +88,7 @@ const TodoList = () => {
     }
   }, []);
 
+  // Update priority of the task
   const updatePriority = useCallback(async (taskId, priority) => {
     try {
       const response = await axios.put(
@@ -97,6 +103,8 @@ const TodoList = () => {
     }
   }, []);
 
+
+  // Delete task
   const deleteTask = useCallback(async (taskId) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -129,10 +137,13 @@ const TodoList = () => {
     });
   }, []);
 
+
+  // Update category state
   const updateCategory = useCallback(async (taskId, category) => {
     updateTask(taskId, null, category);
   }, [updateTask]);
 
+  // Update due date
   const updateDueDate = useCallback(async (taskId, dueDate) => {
     try {
       const response = await axios.put(
@@ -167,6 +178,7 @@ const TodoList = () => {
     getUsers();
 
     if (currentUser) {
+      //Fetch tasks from the API and update the tasks state.
       const getTasks = async () => {
         try {
           
@@ -187,6 +199,7 @@ const TodoList = () => {
 
   const completedTasks = showCompletedTasks ? tasks : tasks.filter(task => !task.completed);
 
+  // Function to get the attachment name from the URL
   const getAttachmentNameFromUrl = (url) => {
     if (!url) return null;
     const urlParts = url.split('/');

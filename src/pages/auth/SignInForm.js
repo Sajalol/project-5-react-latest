@@ -13,6 +13,7 @@ import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 
+// SignInForm component allows users to sign in using their username and password
 function SignInForm() {
   const setCurrentUser = useSetCurrentUser();
 
@@ -25,6 +26,10 @@ function SignInForm() {
   const [errors, setErrors] = useState({});
 
   const history = useHistory();
+
+  // handleSubmit handles form submission by making an API call to sign in the user
+  // and storing the received token in localStorage, then setting the current user
+  // and redirecting to the homepage
   const handleSubmit = async (event) => {
     event.preventDefault();
   
@@ -40,7 +45,7 @@ function SignInForm() {
     }
   };
   
-
+  // handleChange updates the signInData state when the user inputs data in the form fields
   const handleChange = (event) => {
     setSignInData({
       ...signInData,

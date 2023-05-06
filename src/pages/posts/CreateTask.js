@@ -16,6 +16,7 @@ import moment from 'moment';
 
 const { Option } = Select;
 
+// CreateTask component allows users to create a new task with various properties
 const CreateTask = () => {
   const currentUser = useContext(CurrentUserContext);
 
@@ -44,11 +45,13 @@ const CreateTask = () => {
       });
   }, []);
 
+  // onFormChange updates the formData state when the user inputs data in the form fields
   const onFormChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // onDueDateChange updates the formData state when the user selects a due date
   const onDueDateChange = (date, dateString) => {
     setFormData({
       ...formData,
@@ -56,26 +59,32 @@ const CreateTask = () => {
     });
   };
 
+  // onCategoryChange updates the formData state when the user selects a category
   const onCategoryChange = (value) => {
     setFormData({ ...formData, category: value });
   };
 
+  // onPriorityChange updates the formData state when the user selects a priority
   const onPriorityChange = (value) => {
     setFormData({ ...formData, priority: value });
   };
 
+  // onAssignedToChange updates the formData state when the user selects an assignee
   const onAssignedToChange = (value) => {
     setFormData({ ...formData, assigned_to: value });
   };
 
+  // onCompletedChange updates the formData state when the user toggles the "completed" checkbox
   const onCompletedChange = (event) => {
     setFormData({ ...formData, completed: event.target.checked });
   };
 
+  // onCompletedPercentageChange updates the formData state when the user inputs a completion percentage
   const onCompletedPercentageChange = (event) => {
     setFormData({ ...formData, completed_percentage: event.target.value });
   };
 
+  // onAttachmentChange updates the formData state when the user selects a file to attach
   const onAttachmentChange = (event) => {
     const file = event.target.files[0];
     const fileName = file.name; 
@@ -93,6 +102,8 @@ const CreateTask = () => {
     return true;
   };
 
+  // onFormSubmit handles form submission by performing validation, displaying appropriate alerts,
+  // and making an API call to create a new task with the provided data
   const onFormSubmit = (event) => {
     event.preventDefault();
     

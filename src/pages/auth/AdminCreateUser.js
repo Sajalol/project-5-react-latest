@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import styles from '../../styles/AdminCreateUser.module.css';
 import axios from 'axios';
 
+// AdminCreateUser component allows administrators to create new user accounts
 const AdminCreateUser = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,6 +11,7 @@ const AdminCreateUser = () => {
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
 
+  // validatePassword checks if the given password meets the required criteria
   const validatePassword = (password) => {
     // At least 8 characters long
     const minLength = 8;
@@ -31,10 +33,13 @@ const AdminCreateUser = () => {
     );
   };
 
+  // validateForm checks if all required fields in the form are filled
   const validateForm = () => {
     return email && password && firstName && lastName && username;
   };
 
+  // createUser handles the form submission, validating the input data,
+  // making an API call to create a new user, and displaying success/error messages
   const createUser = async () => {
     if (!validateForm()) {
       Swal.fire({
